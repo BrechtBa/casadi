@@ -80,7 +80,7 @@ class Misctests(casadiTestCase):
     nlp = SXFunction('nlp', nlpIn(x=x),nlpOut(f=x))
 
     try:
-        print "ipopt"
+        print("ipopt")
         g = NlpSolver('g', "ipopt", nlp)
     except:
         return
@@ -262,13 +262,13 @@ class Misctests(casadiTestCase):
     b = pickle.loads(s)
     self.assertTrue(a.isNull())
     
-    a = IMatrix(Sparsity.lower(4),range(10))
+    a = IMatrix(Sparsity.lower(4),list(range(10)))
     s = pickle.dumps(a)
     b = pickle.loads(s)
     self.checkarray(a,b)
 
 
-    a = DMatrix(Sparsity.lower(4),range(10))
+    a = DMatrix(Sparsity.lower(4),list(range(10)))
     s = pickle.dumps(a)
     b = pickle.loads(s)
     self.checkarray(a,b)
@@ -278,7 +278,7 @@ class Misctests(casadiTestCase):
       MXFunction('tmp', nlpIn(x=SX.sym("x")))
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       for m in e.message.split("\n"):
         if "You have" in m:
           assert "SX" in m
@@ -286,7 +286,7 @@ class Misctests(casadiTestCase):
       NlpSolver(123)
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "NlpSolver(str,str,Function,Dict)" in e.message
       assert "You have: NlpSolver(int)" in e.message
       assert "::" not in e.message
@@ -296,7 +296,7 @@ class Misctests(casadiTestCase):
       vertcat(123)
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "vertcat([SX]" in e.message
       assert "vertcat([DMatrix" in e.message
       assert "You have: vertcat(int)" in e.message
@@ -307,7 +307,7 @@ class Misctests(casadiTestCase):
       substitute(123)
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "substitute(SX,SX,SX)" in e.message
       assert "substitute([SX] ,[SX] ,[SX] )" in e.message
       assert "You have: substitute(int)" in e.message
@@ -318,7 +318,7 @@ class Misctests(casadiTestCase):
       SXFunction('tmp', daeIn(x=SX.sym("x")))
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "You have: SXFunction(str, (str:SX,[str]))" in e.message
       assert "::" not in e.message
       assert "std" not in e.message
@@ -327,7 +327,7 @@ class Misctests(casadiTestCase):
       NlpSolver.loadPlugin(132)
       self.assertTrue(False)
     except TypeError as e:
-      print e.message
+      print(e.message)
       assert "Failed to convert input to str" in e.message
       assert "::" not in e.message
       assert "std" not in e.message
@@ -338,33 +338,33 @@ class Misctests(casadiTestCase):
       [x]+ x
       self.assertTrue(False)
     except TypeError as e:
-      print e.message
+      print(e.message)
 
     try:
       x + [x]
       self.assertTrue(False)
     except TypeError as e:
-      print e.message
+      print(e.message)
 
     try:
       x.reshape(2)
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "reshape(SX,(int,int) )" in e.message
 
     try:
       x.reshape(("a",2))
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "You have: reshape((str,int))" in e.message
       
     try:
       diagsplit("s")
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "diagsplit(SX,int)" in e.message
       assert "diagsplit(DMatrix ,int)" in e.message
 
@@ -372,14 +372,14 @@ class Misctests(casadiTestCase):
       DMatrix("df")
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "  DMatrix (" in e.message
 
     try:
       vertcat([1,SX.sym('x'),MX.sym('x')])
       self.assertTrue(False)
     except NotImplementedError as e:
-      print e.message
+      print(e.message)
       assert "  vertcat(" in e.message
 
   def test_callkw(self):
@@ -432,7 +432,7 @@ class Misctests(casadiTestCase):
     
     f = MXFunction('f', [x],[v])
     
-    print f
+    print(f)
     
     f.setInput(-6)
     f.evaluate()
@@ -442,7 +442,7 @@ class Misctests(casadiTestCase):
     try :
       f.evaluate()
     except Exception as e:
-      print str(e)
+      print(str(e))
       self.assertTrue("x must be larger than 3" in str(e))
 
   @requiresPlugin(NlpSolver,"ipopt")
@@ -477,7 +477,7 @@ class Misctests(casadiTestCase):
       nlpIn(foo=SX.sym('x'))
     except Exception as e:
       msg = str(e)
-    print msg
+    print(msg)
     assert("'x', 'p'" in msg)
     
 

@@ -41,7 +41,7 @@ if SocpSolver.hasPlugin("mosek"):
 if SocpSolver.hasPlugin("ecos"):
   socpsolvers.append(("ecos",{"abstol":1e-10,"reltol":1e-10},{"less_digits": 1},False))
 
-print socpsolvers
+print(socpsolvers)
   
 class SocpSolverTests(casadiTestCase):
 

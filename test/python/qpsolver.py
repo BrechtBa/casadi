@@ -62,7 +62,7 @@ if NlpSolver.hasPlugin("ipopt"):
 # if QpSolver.hasPlugin("qcqp.socp.ecos"):
 #   qpsolvers.append(("qcqp.socp.ecos",{"qcqp_solver_options.socp_solver_options": {"reltol":1e-10,"abstol":1e-10}},{"less_digits": 2}))
 
-print qpsolvers
+print(qpsolvers)
 
 class QpSolverTests(casadiTestCase):
 
@@ -599,8 +599,8 @@ class QpSolverTests(casadiTestCase):
     #return
     self.message("Badly scaled problem")
     N = 50
-    H = c.diag(range(1,N+1))
-    x0 = DMatrix(range(N))
+    H = c.diag(list(range(1,N+1)))
+    x0 = DMatrix(list(range(N)))
     
     G = -1.0*mul(H,x0)
 

@@ -83,7 +83,7 @@ class ImplicitFunctiontests(casadiTestCase):
       f=SXFunction("f", [x,A,b],[mul(A,x)-b,mul(C_,x)])
       for ad_weight_sp in [0,1]:
         for ad_weight in [0,1]:
-          print ad_weight, ad_weight_sp
+          print(ad_weight, ad_weight_sp)
           options2 = dict(options)
           options2["ad_weight_sp"] = ad_weight_sp
           options2["ad_weight"] = ad_weight
@@ -265,14 +265,14 @@ class ImplicitFunctiontests(casadiTestCase):
     G = F.gradient(0,0)
     G.setInput(x0_val)
     G.evaluate()
-    print G.getOutput()
-    print G
+    print(G.getOutput())
+    print(G)
 
     J = F.jacobian(0,0)
     J.setInput(x0_val)
     J.evaluate()
-    print J.getOutput()
-    print J
+    print(J.getOutput())
+    print(J)
     
     self.checkarray(G.getOutput(),DMatrix([2]))
     self.checkarray(J.getOutput(),DMatrix([2]))

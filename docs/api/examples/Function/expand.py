@@ -36,12 +36,12 @@ z = mul(x,y)
 f = MXFunction("f", [x,y],[z])
 
 #! An MX graph is lazy in evaluation
-print "Expression = ", f.outputExpr(0)
+print("Expression = ", f.outputExpr(0))
 
 #! We expand the MXFunction into an SXFunction
 fSX = f.expand()
 
-print "Expanded expression = ", fSX.outputExpr(0)
+print("Expanded expression = ", fSX.outputExpr(0))
 
 
 #! Limitations
@@ -57,5 +57,5 @@ G = MXFunction("G", [x,y], [g])
 try:
   G.expand()
 except Exception as e:
-  print e
+  print(e)
 

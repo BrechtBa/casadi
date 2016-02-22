@@ -63,9 +63,9 @@ except:
 
 integrators.append(("rk",["ode"],{"number_of_finite_elements": 1000}))
 
-print "Will test these integrators:"
+print("Will test these integrators:")
 for cl, t, options in integrators:
-  print cl, " : ", t
+  print(cl, " : ", t)
 
 class Integrationtests(casadiTestCase):
 
@@ -220,7 +220,7 @@ class Integrationtests(casadiTestCase):
                
             f = SXFunction("f", daeIn(**din),daeOut(**dout))
             
-            for k in solution.keys():
+            for k in list(solution.keys()):
               solution[k] = substitute(solution[k],vertcat([tstart,tend]),vertcat([tstart_,tend_]))
 
             fs = SXFunction("fs", integratorIn(**solutionin),integratorOut(**solution))
@@ -247,7 +247,7 @@ class Integrationtests(casadiTestCase):
             for a_options in solveroptions("B"):
               for f_options in solveroptions():
                 message = "f_options: %s , a_options: %s" % (str(f_options) , str(a_options))
-                print message
+                print(message)
                 opts = {}
                 opts["exact_jacobianB"] = True
                 opts["gather_stats"] = True
@@ -256,22 +256,22 @@ class Integrationtests(casadiTestCase):
                 opts["t0"] = tstart_
                 opts["tf"] = tend_
                 for op in (options, f_options, a_options):
-                  for (k,v) in op.items():
+                  for (k,v) in list(op.items()):
                     opts[k] = v
                 integrator = c.Integrator("integrator", Integrator, (f, g), opts)
                 for ff in [fs,integrator]:
-                  for k,v in point.items():
+                  for k,v in list(point.items()):
                     if not ff.getInput(k).isempty():
                       ff.setInput(v,k)
 
                 integrator.evaluate()
                 fs.evaluate()
-                print "res=",integrator.getOutput("xf")-fs.getOutput("xf"), fs.getOutput("xf")
-                print "Rres=",integrator.getOutput("rxf")-fs.getOutput("rxf"), fs.getOutput("rxf")
+                print("res=",integrator.getOutput("xf")-fs.getOutput("xf"), fs.getOutput("xf"))
+                print("Rres=",integrator.getOutput("rxf")-fs.getOutput("rxf"), fs.getOutput("rxf"))
                 # self.checkarray(integrator.getOutput("rxf"),fs.getOutput("rxf"),digits=4)
                 stats = integrator.getStats()
                 
-                print stats
+                print(stats)
                 self.assertTrue(stats["nsteps"]<1500)
                 self.assertTrue(stats["nstepsB"]<2500)
                 self.assertTrue(stats["nlinsetups"]<100)
@@ -333,7 +333,7 @@ class Integrationtests(casadiTestCase):
              
           f = SXFunction("f", daeIn(**din),daeOut(**dout))
             
-          for k in solution.keys():
+          for k in list(solution.keys()):
             solution[k] = substitute(solution[k],vertcat([tstart,tend]),vertcat([tstart_,tend_]))
           
           fs = SXFunction("fs", integratorIn(**solutionin),integratorOut(**solution))
@@ -359,19 +359,19 @@ class Integrationtests(casadiTestCase):
           for a_options in solveroptions("B"):
             for f_options in solveroptions():
               message = "f_options: %s , a_options: %s" % (str(f_options) , str(a_options))
-              print message
+              print(message)
 
               opts = {}
               opts["exact_jacobianB"] = True
               opts["t0"] = tstart_
               opts["tf"] = tend_
               for op in (options, f_options, a_options):
-                 for (k,v) in op.items():
+                 for (k,v) in list(op.items()):
                     opts[k] = v
               integrator = c.Integrator("integrator", Integrator, (f, g), opts)
               
               for ff in [fs,integrator]:
-                for k,v in point.items():
+                for k,v in list(point.items()):
                   if not ff.getInput(k).isempty():
                     ff.setInput(v,k)
 
@@ -488,19 +488,19 @@ class Integrationtests(casadiTestCase):
         yield (["ode"],{'x':q,'p':p},{'ode': vertcat([q[1],p[0]+q[1]**2 ])},{},{},{'x0':q, 'p': p} ,{'xf': vertcat([s1,s2])},{'x0': A, 'p': p0},(0,0.4) )
       
       for tt in checks():
-        print tt
+        print(tt)
         for p_features, din, dout, rdin, rdout, solutionin, solution, point, (tstart_, tend_) in variations(*tt):
           if p_features[0] in features:
             message = "%s: %s => %s, %s => %s, explicit (%s) tstart = %f" % (Integrator,str(din),str(dout),str(rdin),str(rdout),str(solution),tstart_)
-            print message
+            print(message)
             g = Function()
             if len(rdin)>1:
               g = SXFunction("g", rdaeIn(**rdin),rdaeOut(**rdout))
                
-            dout_sx = {k:SX(v) for k, v in dout.iteritems()} # hack
+            dout_sx = {k:SX(v) for k, v in dout.items()} # hack
             f = SXFunction("f", daeIn(**din),daeOut(**dout_sx))
             
-            for k in solution.keys():
+            for k in list(solution.keys()):
               solution[k] = substitute(solution[k],vertcat([tstart,tend]),vertcat([tstart_,tend_]))
             
             fs = SXFunction("fs", integratorIn(**solutionin),integratorOut(**solution))
@@ -518,7 +518,7 @@ class Integrationtests(casadiTestCase):
             integrator = c.Integrator("integrator", Integrator, (f, g), opts)
 
             for ff in [fs,integrator]:
-              for k,v in point.items():
+              for k,v in list(point.items()):
                 if not ff.getInput(k).isempty():
                   ff.setInput(v,k)
             integrator.evaluate()
@@ -586,7 +586,7 @@ class Integrationtests(casadiTestCase):
     # Evaluate 
     f.evaluate()
     # print result
-    print f.getOutput()
+    print(f.getOutput())
   
   def test_issue92b(self):
     self.message("regression check for issue 92")
@@ -605,7 +605,7 @@ class Integrationtests(casadiTestCase):
     ## Integrate
     integrator.evaluate()
     # print result
-    print integrator.getOutput("xf")
+    print(integrator.getOutput("xf"))
     
   def test_issue92(self):
     self.message("regression check for issue 92")
@@ -631,7 +631,7 @@ class Integrationtests(casadiTestCase):
     J=f.jacobian(0)
     J.setInput([1,0])
     J.evaluate()
-    print "jac=",J.getOutput().nz[0]-exp(1)
+    print("jac=",J.getOutput().nz[0]-exp(1))
     self.assertAlmostEqual(J.getOutput()[0,0],exp(1),5,"Evaluation output mismatch")
     
   def test_eval(self):
@@ -732,7 +732,7 @@ class Integrationtests(casadiTestCase):
     J.setInput(p0,1)
     J.evaluate()
     outB=J.getOutput().toArray()
-    print outA-outB
+    print(outA-outB)
     
   def test_hess3(self):
     self.message('CVodes integration: hessian to p: Jacobian of integrator.jacobian')
@@ -777,7 +777,7 @@ class Integrationtests(casadiTestCase):
     JT.setInput([num['q0']],0)
     JT.setInput([num['p']],1)
     JT.evaluate()
-    print JT.getOutput()
+    print(JT.getOutput())
 
     H  = JT.jacobian(1)
     H.setInput([num['q0']],0)
@@ -891,7 +891,7 @@ class Integrationtests(casadiTestCase):
     H.setInput(A,0)
     H.setInput(vec(B),1)
     H.evaluate()
-    print array(H.getOutput())
+    print(array(H.getOutput()))
     
     
   def test_mathieu_system(self):
@@ -926,7 +926,7 @@ class Integrationtests(casadiTestCase):
     qe.setInput(A,0)
     qe.setInput(B,1)
     qe.evaluate()
-    print array(qe.getOutput())
+    print(array(qe.getOutput()))
 
   def test_nl_system(self):
     """
@@ -973,8 +973,8 @@ class Integrationtests(casadiTestCase):
     qe.setInput(p0,1)
     qe.evaluate()
 
-    print qe.getOutput()[0]
-    print qe.getOutput()[1]
+    print(qe.getOutput()[0])
+    print(qe.getOutput()[1])
     
     self.assertAlmostEqual(qe.getOutput()[0],(2*y0-log(yc0**2/p0+1))/2-log(cos(arctan(yc0/sqrt(p0))+sqrt(p0)*te)),11,"Nonlin ODE")
     self.assertAlmostEqual(qe.getOutput()[1],sqrt(p0)*tan(arctan(yc0/sqrt(p0))+sqrt(p0)*te),11,"Nonlin ODE")
@@ -1033,8 +1033,8 @@ class Integrationtests(casadiTestCase):
     def sec(x):
       return 1.0/cos(x)
     Hr = array([[0,0],[0,-(2*yc0*tan(arctan(yc0)+te))/(yc0**4+2*yc0**2+1)+sec(arctan(yc0)+te)**2/(yc0**4+2*yc0**2+1)+(2*yc0**2)/(yc0**4+2*yc0**2+1)-1/(yc0**2+1)],[0,0],[0,-(2*yc0*tan(arctan(yc0)+te)**2)/(yc0**4+2*yc0**2+1)+(2*sec(arctan(yc0)+te)**2*tan(arctan(yc0)+te))/(yc0**4+2*yc0**2+1)-(2*yc0)/(yc0**4+2*yc0**2+1)]])
-    print array(H.getOutput())
-    print Hr
+    print(array(H.getOutput()))
+    print(Hr)
         
 
   def test_hessian2D(self):

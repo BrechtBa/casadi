@@ -71,7 +71,7 @@ nlp = MXFunction('nlp', nlpIn(x=X),nlpOut(f=F,g=G))
 nlp.setInput([1,1,1,1,1],"x")
 nlp.evaluate()
 #! Test the objective for some value of x:
-print nlp.getOutput("f").toArray()
+print(nlp.getOutput("f").toArray())
 
 solver = NlpSolver("nlp","ipopt", nlp)
 solver.printOptions()
@@ -88,5 +88,5 @@ solver.setInput([-100,-100,-100,-100,-100],"lbg")
 
 
 solver.evaluate()
-print solver.getOutput("x")
+print(solver.getOutput("x"))
 #! Nested optimization

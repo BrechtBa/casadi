@@ -246,7 +246,7 @@ class Functiontests(casadiTestCase):
     
     for n in ([63,64,65,127,128,129] if args.run_slow else [63,64,65]):
       for m in ([63,64,65,127,128,129] if args.run_slow else [63,64,65]):
-        print (n,m)
+        print((n,m))
         sp = Sparsity.dense(n,m)
         
         test(sp)
@@ -331,7 +331,7 @@ class Functiontests(casadiTestCase):
       d = Sparsity.dense(i,i)
       test(d)
       
-      d = Sparsity.diag(i) + Sparsity.triplet(i,i,[0]*i,range(i))+Sparsity.triplet(i,i,range(i),[0]*i)
+      d = Sparsity.diag(i) + Sparsity.triplet(i,i,[0]*i,list(range(i)))+Sparsity.triplet(i,i,list(range(i)),[0]*i)
       test(d)
 
 
@@ -438,7 +438,9 @@ class Functiontests(casadiTestCase):
       class Fun:
         # sin(x+3*y)
         
-        def evaluate(self,(x,y),(z,)):
+        def evaluate(self, xxx_todo_changeme4, xxx_todo_changeme5):
+          (x,y) = xxx_todo_changeme4
+          (z,) = xxx_todo_changeme5
           z0 = 3*y
           z1 = x+z0
           z2 = sin(z1)
@@ -567,9 +569,10 @@ class Functiontests(casadiTestCase):
     def getP(indirect=True):
     
       @pyfunction([Sparsity.dense(1,1),Sparsity.dense(1,1)], [Sparsity.dense(1,1)])
-      def Fun((x,y)):
+      def Fun(xxx_todo_changeme26):
         # sin(x+3*y)
         
+        (x,y) = xxx_todo_changeme26
         z0 = 3*y
         z1 = x+z0
         z2 = sin(z1)
@@ -609,13 +612,17 @@ class Functiontests(casadiTestCase):
       class Fun:
         # sin(x+3*y)
         
-        def evaluate(self,(x,y),(z,)):
+        def evaluate(self, xxx_todo_changeme6, xxx_todo_changeme7):
+          (x,y) = xxx_todo_changeme6
+          (z,) = xxx_todo_changeme7
           z0 = 3*y
           z1 = x+z0
           z2 = sin(z1)
           z.set(z2)
 
-        def fwd(self,(x,y),(z,),seeds,sens):
+        def fwd(self, xxx_todo_changeme8, xxx_todo_changeme9,seeds,sens):
+          (x,y) = xxx_todo_changeme8
+          (z,) = xxx_todo_changeme9
           assert(max_fwd)
           z0 = 3*y
           z1 = x+z0
@@ -628,7 +635,9 @@ class Functiontests(casadiTestCase):
             dz2 = cos(z1)*dz1
             dz.set(dz2)
         
-        def adj(self,(x,y),(z,),seeds,sens):
+        def adj(self, xxx_todo_changeme10, xxx_todo_changeme11,seeds,sens):
+          (x,y) = xxx_todo_changeme10
+          (z,) = xxx_todo_changeme11
           assert(max_adj)
           z0 = 3*y
           z1 = x+z0
@@ -688,14 +697,18 @@ class Functiontests(casadiTestCase):
       class Fun:
         # sin(x+3*y)
         
-        def evaluate(self,(x,y),(z,)):
+        def evaluate(self, xxx_todo_changeme12, xxx_todo_changeme13):
+          (x,y) = xxx_todo_changeme12
+          (z,) = xxx_todo_changeme13
           z0 = 3*y
           z1 = x+z0
           z2 = sin(z1)
           z.set(z2)
           
         if max_fwd:
-          def fwd(self,(x,y),(z,),seeds,sens):
+          def fwd(self, xxx_todo_changeme, xxx_todo_changeme1,seeds,sens):
+            (x,y) = xxx_todo_changeme
+            (z,) = xxx_todo_changeme1
             z0 = 3*y
             z1 = x+z0
             z2 = sin(z1)
@@ -708,7 +721,9 @@ class Functiontests(casadiTestCase):
               dz.set(dz2)
         
         if max_adj:
-          def adj(self,(x,y),(z,),seeds,sens):
+          def adj(self, xxx_todo_changeme2, xxx_todo_changeme3,seeds,sens):
+            (x,y) = xxx_todo_changeme2
+            (z,) = xxx_todo_changeme3
             z0 = 3*y
             z1 = x+z0
             z2 = sin(z1)
@@ -769,9 +784,11 @@ class Functiontests(casadiTestCase):
 
       class Fun:
         
-        def evaluate(self,(x,y),(z,)):
+        def evaluate(self, xxx_todo_changeme14, xxx_todo_changeme15):
           # sin(x0+3*y)*x1
 
+          (x,y) = xxx_todo_changeme14
+          (z,) = xxx_todo_changeme15
           x0 = x[0]
           x1 = x[1]
           
@@ -782,7 +799,9 @@ class Functiontests(casadiTestCase):
           
           z.set(z3)
         
-        def fwd(self,(x,y),(z,),seeds,sens):
+        def fwd(self, xxx_todo_changeme16, xxx_todo_changeme17,seeds,sens):
+          (x,y) = xxx_todo_changeme16
+          (z,) = xxx_todo_changeme17
           assert(max_fwd)
           x0 = x[0]
           x1 = x[1]
@@ -804,7 +823,9 @@ class Functiontests(casadiTestCase):
             dz3 = x1*dz2 + dx1*z2
           
             dz.set(dz3)
-        def adj(self,(x,y),(z,),seeds,sens):
+        def adj(self, xxx_todo_changeme18, xxx_todo_changeme19,seeds,sens):
+          (x,y) = xxx_todo_changeme18
+          (z,) = xxx_todo_changeme19
           assert(max_adj)
           x0 = x[0]
           x1 = x[1]
@@ -884,12 +905,16 @@ class Functiontests(casadiTestCase):
       
       class Squares:
 
-         def evaluate(self,(X,),(Y,)):
+         def evaluate(self, xxx_todo_changeme20, xxx_todo_changeme21):
+            (X,) = xxx_todo_changeme20
+            (Y,) = xxx_todo_changeme21
             x = X[0]
             y = X[1]
             Y.set([x**2+y,x*y])
           
-         def fwd(self,(X,),(Y,),seeds,sens):
+         def fwd(self, xxx_todo_changeme22, xxx_todo_changeme23,seeds,sens):
+            (X,) = xxx_todo_changeme22
+            (Y,) = xxx_todo_changeme23
             assert(max_fwd)
             x = X[0]
             y = X[1]
@@ -899,7 +924,9 @@ class Functiontests(casadiTestCase):
               ydot = Xdot[1]
               Zdot.set([2*x*xdot+ydot,y*xdot+x*ydot])
             
-         def adj(self,(X,),(Y,),seeds,sens):
+         def adj(self, xxx_todo_changeme24, xxx_todo_changeme25,seeds,sens):
+            (X,) = xxx_todo_changeme24
+            (Y,) = xxx_todo_changeme25
             assert(max_adj)
             x = X[0]
             y = X[1]
@@ -934,7 +961,7 @@ class Functiontests(casadiTestCase):
                 
       self.checkfunction(f,g,sens_der=False,hessian=False,evals=1)
 
-      print f
+      print(f)
       f = getP(max_fwd=1,max_adj=0,indirect=indirect)
                 
       self.checkfunction(f,g,sens_der=False,hessian=False,adj=False,evals=1)
@@ -990,9 +1017,9 @@ class Functiontests(casadiTestCase):
     Fun.setInput(0.2,0)
     Fun.setInput(0.7,1)
     
-    print Fun.getInput(0),Fun.getInput(1)
+    print(Fun.getInput(0),Fun.getInput(1))
     
-    print g.getInput(0),g.getInput(1)
+    print(g.getInput(0),g.getInput(1))
     
     self.checkfunction(Fun,g,fwd=False,adj=False,indirect=False)
 
@@ -1002,7 +1029,7 @@ class Functiontests(casadiTestCase):
     n = 1
     x = SX.sym("x",n)
 
-    M = SXFunction("M", [x],[mul((x-DMatrix(range(n))),x.T)])
+    M = SXFunction("M", [x],[mul((x-DMatrix(list(range(n)))),x.T)])
     M.evaluate()
 
 
@@ -1024,7 +1051,7 @@ class Functiontests(casadiTestCase):
     
     @pyevaluate
     def dummy(f):
-      print f
+      print(f)
       f.setOutput(1)
 
     import warnings
@@ -1058,7 +1085,7 @@ class Functiontests(casadiTestCase):
     J.setInput([0.1])
     J.evaluate()
     
-    print J
+    print(J)
 
     self.assertFalse("derivative" in str(J))
 
@@ -1068,7 +1095,7 @@ class Functiontests(casadiTestCase):
     J.setInput([0.1])
     J.evaluate()
     
-    print J
+    print(J)
 
     self.assertFalse("derivative" in str(J))
     
@@ -1423,21 +1450,21 @@ class Functiontests(casadiTestCase):
           ([Z[0]],[Z[0]]*n),
           ([MX()]*3,[MX()]*3),
         ]:
-      print "args", Z_alt
+      print("args", Z_alt)
 
       for parallelization in ["serial","openmp"] if args.run_slow else ["serial"]:
-        print parallelization
-        res = fun.map(map(horzcat,[X,Y,Z_alt,V]),parallelization)
+        print(parallelization)
+        res = fun.map(list(map(horzcat,[X,Y,Z_alt,V])),parallelization)
 
 
-        F = MXFunction("F",X+Y+Z+V,map(sin,res))
+        F = MXFunction("F",X+Y+Z+V,list(map(sin,res)))
 
         resref = [[] for i in range(fun.nOut())]
         for r in zip(X,Y,Z_alt2,V):
           for i,e in enumerate(map(sin,fun(r))):
             resref[i] = resref[i] + [e]
 
-        Fref = MXFunction("F",X+Y+Z+V,map(horzcat,resref))
+        Fref = MXFunction("F",X+Y+Z+V,list(map(horzcat,resref)))
         
         np.random.seed(0)
         X_ = [ DMatrix(i.sparsity(),np.random.random(i.nnz())) for i in X ] 
@@ -1476,17 +1503,17 @@ class Functiontests(casadiTestCase):
     for Z_alt in [Z,[MX()]*3]:
 
       for parallelization in ["serial","openmp"]:
-        res = fun.map(zip(X,Y,Z_alt,V),parallelization)
+        res = fun.map(list(zip(X,Y,Z_alt,V)),parallelization)
 
 
         flatres = []
         for r in res:
-          flatres+= map(sin,r)
+          flatres+= list(map(sin,r))
         F = MXFunction("F",X+Y+Z+V,flatres)
 
         flatresref = []
         for r in zip(X,Y,Z_alt,V):
-          flatresref+=map(sin,fun(r))
+          flatresref+=list(map(sin,fun(r)))
 
         Fref = MXFunction("F",X+Y+Z+V,flatresref)
         
@@ -1527,17 +1554,17 @@ class Functiontests(casadiTestCase):
       for Z_alt in [Z,[MX()]*3]:
         zi+= 1
         for parallelization in ["serial","openmp"]:
-          res = fun.mapsum(map(horzcat,[X,Y,Z_alt,V]),parallelization)
+          res = fun.mapsum(list(map(horzcat,[X,Y,Z_alt,V])),parallelization)
 
 
-          F = MXFunction("F",X+Y+Z+V,map(sin,res),{"ad_weight": 0,"ad_weight_sp":ad_weight_sp})
+          F = MXFunction("F",X+Y+Z+V,list(map(sin,res)),{"ad_weight": 0,"ad_weight_sp":ad_weight_sp})
 
           resref = [0 for i in range(fun.nOut())]
           for r in zip(X,Y,Z_alt,V):
             for i,e in enumerate(fun(r)):
               resref[i] = resref[i] + e
 
-          Fref = MXFunction("F",X+Y+Z+V,map(sin,resref))
+          Fref = MXFunction("F",X+Y+Z+V,list(map(sin,resref)))
           
           np.random.seed(0)
           X_ = [ DMatrix(i.sparsity(),np.random.random(i.nnz())) for i in X ] 
@@ -1814,7 +1841,7 @@ class Functiontests(casadiTestCase):
         Y1s.append(Y1)
         Xps.append(XP)
       Fref = MXFunction("f",[X,horzcat(Y),horzcat(Z),horzcat(V)],[horzcat(Xps),horzcat(Y0s),horzcat(Y1s)])
-      print Fref([X_,horzcat(Y_),horzcat(Z_),horzcat(V_)])
+      print(Fref([X_,horzcat(Y_),horzcat(Z_),horzcat(V_)]))
 
       for f in [F,toSXFunction(F)]:
         for i,e in enumerate([X_,horzcat(Y_),horzcat(Z_),horzcat(V_)]):
@@ -1892,9 +1919,9 @@ class Functiontests(casadiTestCase):
   def test_KernelSum2D(self):
     for n,m in [(20,40),(5,7),(7,5),(40,20)]:
       try:
-        xx, yy = np.meshgrid(range(n), range(m),indexing="ij")
+        xx, yy = np.meshgrid(list(range(n)), list(range(m)),indexing="ij")
       except:
-        yy, xx = np.meshgrid(range(m), range(n))
+        yy, xx = np.meshgrid(list(range(m)), list(range(n)))
 
       Z = np.cos(xx/4.0+yy/3.0)
       
@@ -1918,14 +1945,14 @@ class Functiontests(casadiTestCase):
           continue      
         for z, z_options in [(Z,{}),(pt,{"pointer_input": True,"image_type":32})]:
         
-          print par,options,z_options
+          print(par,options,z_options)
           if "opencl"!=par and len(z_options)!=0: continue
           
           opts = {"parallelization": par}
           opts.update(options)
           opts.update(z_options)
           
-          print opts
+          print(opts)
           p = SX.sym("p",2)
           x = SX.sym("x",2)
 
@@ -1940,7 +1967,7 @@ class Functiontests(casadiTestCase):
 
 
           for x0 in [DMatrix([n/2,m/2]),DMatrix([0,m-1]),DMatrix([n-2,1])]:
-            print (n,m), x0
+            print((n,m), x0)
             F = KernelSum2D("test",f,(n,m),4,1,opts)
 
             Fref = Map("f",f,n*m,[True,True,False],[False])

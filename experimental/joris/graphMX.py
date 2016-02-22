@@ -24,7 +24,7 @@
 from casadi import *
 from casadi.tools import *
 
-import __builtin__
+import builtins
 
 x = msym("x",2,1)
 y = msym("y")
@@ -42,7 +42,7 @@ z = x+y
 
 z = mul(msym("a",2,2),msym("p",2,2))
 
-print z
+print(z)
 
 dotsave(z,filename='MX2.pdf')
 
@@ -90,7 +90,7 @@ zz = z+y
 zz = vertcat([zz,y])
 
 d = [MX("d") for i in range(9)]
-f = MXFunction(d + [MX("d",2,1)],[__builtin__.sum(i for i in d)])
+f = MXFunction(d + [MX("d",2,1)],[builtins.sum(i for i in d)])
 f.init()
 
 g = x[1:,1:]

@@ -57,7 +57,7 @@ if QpSolver.hasPlugin("sqic") and NlpSolver.hasPlugin("stabilizedsqp"):
   solvers.append(("stabilizedsqp",{"tol_pr": 1e-9, "tol_du": 1e-9,"stabilized_qp_solver": "qp", "stabilized_qp_solver_options": {"qp_solver": "sqic"}}))
 
 
-print solvers
+print(solvers)
 """
 try:
   NlpSolver.loadPlugin("knitro")
@@ -253,7 +253,7 @@ class NLPtests(casadiTestCase):
     h.setInput(-40,1)
     h.setInput(1,2)
     h.evaluate()
-    print h.getOutput()
+    print(h.getOutput())
     
     solver = None
     for Solver, solver_options in solvers:
@@ -614,9 +614,9 @@ class NLPtests(casadiTestCase):
       solver.setInput([-10]*N,"lbg")
       solver.setInput([10]*N,"ubg")
       solver.evaluate()
-      print "residuals"
-      print array(solver.getOutput("x")).squeeze()-x0
-      print "bazmeg", solver.getOutput("f")
+      print("residuals")
+      print(array(solver.getOutput("x")).squeeze()-x0)
+      print("bazmeg", solver.getOutput("f"))
       self.assertAlmostEqual(solver.getOutput("f")[0],0,10,str(Solver))
       self.checkarray(array(solver.getOutput("x")).squeeze(),x0,str(Solver),digits=8)
       self.checkarray(solver.getOutput("lam_x"),DMatrix([0]*10),8,str(Solver),digits=8)
@@ -872,8 +872,8 @@ class NLPtests(casadiTestCase):
     N = 50 
 
     x = SX.sym("x",N)
-    x0 = DMatrix(range(N))
-    H = diag(range(1,N+1))
+    x0 = DMatrix(list(range(N)))
+    H = diag(list(range(1,N+1)))
     obj = 0.5*mul([(x-x0).T,H,(x-x0)])
 
     nlp = SXFunction("nlp", nlpIn(x=x),nlpOut(f=obj))
@@ -909,7 +909,7 @@ class NLPtests(casadiTestCase):
       self.message(str(Solver))
       solver = NlpSolver(Solver, nlp)
       solver.setOption(solver_options)
-      for k,v in ({"tol":1e-8,"tol_pr":1e-10,"TolOpti":1e-25,"hessian_approximation":"limited-memory","max_iter":100,"MaxIter": 100,"print_level":0, "fixed_variable_treatment": "make_constraint"}).iteritems():
+      for k,v in ({"tol":1e-8,"tol_pr":1e-10,"TolOpti":1e-25,"hessian_approximation":"limited-memory","max_iter":100,"MaxIter": 100,"print_level":0, "fixed_variable_treatment": "make_constraint"}).items():
         if solver.hasOption(k):
           solver.setOption(k,v)
           
@@ -1067,8 +1067,8 @@ class NLPtests(casadiTestCase):
   def test_permute(self):
     for Solver, solver_options in solvers:
       if "snopt" not in str(Solver): continue
-      for permute_g in itertools.permutations(range(3)):
-        for permute_x in itertools.permutations(range(4)):
+      for permute_g in itertools.permutations(list(range(3))):
+        for permute_x in itertools.permutations(list(range(4))):
           x=SX.sym("x",4)
           x1,x2,x3,x4 = x[permute_x]
           g = [x1**2+x2**2+x3,
@@ -1111,8 +1111,8 @@ class NLPtests(casadiTestCase):
   def test_permute2(self):
     for Solver, solver_options in solvers:
       if "snopt" not in str(Solver): continue
-      for permute_g in itertools.permutations(range(3)):
-        for permute_x in itertools.permutations(range(4)):
+      for permute_g in itertools.permutations(list(range(3))):
+        for permute_x in itertools.permutations(list(range(4))):
           x=SX.sym("x",4)
           x1,x2,x3,x4 = x[permute_x]
           g = [x1**2+x2+x3,
@@ -1151,8 +1151,8 @@ class NLPtests(casadiTestCase):
   def test_permute3(self):
     for Solver, solver_options in solvers:
       if "snopt" not in str(Solver): continue
-      for permute_g in itertools.permutations(range(3)):
-        for permute_x in itertools.permutations(range(4)):
+      for permute_g in itertools.permutations(list(range(3))):
+        for permute_x in itertools.permutations(list(range(4))):
           x=SX.sym("x",4)
           x1,x2,x3,x4 = x[permute_x]
           g = [x1**2+x2+x3,
@@ -1289,5 +1289,5 @@ class NLPtests(casadiTestCase):
       
 if __name__ == '__main__':
     unittest.main()
-    print solvers
+    print(solvers)
 

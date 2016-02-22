@@ -52,7 +52,7 @@ class Sparsitytests(casadiTestCase):
     c =a.patternUnion(b)
         
     c = a + b
-    self.assertEquals(c.nnz(),len(nza.union(nzb)))
+    self.assertEqual(c.nnz(),len(nza.union(nzb)))
     for k in range(c.nnz()):
       ind = (c.row(k),c.getCol()[k])
       self.assertTrue(ind in nza or ind in nzb)
@@ -83,7 +83,7 @@ class Sparsitytests(casadiTestCase):
       self.assertTrue(ind in nza and ind in nzb)
         
     c = a * b
-    self.assertEquals(c.nnz(),len(nza.intersection(nzb)))
+    self.assertEqual(c.nnz(),len(nza.intersection(nzb)))
     for k in range(c.nnz()):
       ind = (c.row(k),c.getCol()[k])
       self.assertTrue(ind in nza and ind in nzb)
@@ -212,9 +212,9 @@ class Sparsitytests(casadiTestCase):
       
   def test_splower(self):
     sp = Sparsity(4,3,[0,2,2,3],[1,2,1])
-    print array(sp)
-    print array(tril(sp))
-    print sp.getLowerNZ()
+    print(array(sp))
+    print(array(tril(sp)))
+    print(sp.getLowerNZ())
     
     
   def test_diag(self):
@@ -281,7 +281,7 @@ class Sparsitytests(casadiTestCase):
     self.assertTrue(c.sparsity()==d)
     
     f = SXFunction('f', [b],[c])
-    f.setInput(range(1,len(nza)+1))
+    f.setInput(list(range(1,len(nza)+1)))
     f.evaluate()
     
     self.checkarray(DMatrix(f.getOutput().nonzeros()),DMatrix([1,0,0,7,0]),"sparsity index")
@@ -313,7 +313,7 @@ class Sparsitytests(casadiTestCase):
     self.assertTrue(c.sparsity()==d)
     
     f = MXFunction('f', [b],[c])
-    f.setInputNZ(range(1,len(nza)+1))
+    f.setInputNZ(list(range(1,len(nza)+1)))
     f.evaluate()
     
     self.checkarray(DMatrix(f.getOutput().nonzeros()),DMatrix([1,0,0,7,0]),"sparsity index")
@@ -336,8 +336,8 @@ class Sparsitytests(casadiTestCase):
     
     A2, B2 = (a.T).getCRS()
     
-    print A1, B1
-    print A2, B2
+    print(A1, B1)
+    print(A2, B2)
     
   def test_dm_diagcat_dense(self):
     self.message("Dulmage-Mendelsohn")
@@ -348,7 +348,7 @@ class Sparsitytests(casadiTestCase):
       A = diagcat(Ai)
       
       #A.sparsity().spy()
-      perm =  numpy.random.permutation(range(A.size1()))
+      perm =  numpy.random.permutation(list(range(A.size1())))
       
       AP = A[perm,perm]
       #AP.sparsity().spy()
@@ -385,7 +385,7 @@ class Sparsitytests(casadiTestCase):
       A = diagcat(Ai)
       
       #A.sparsity().spy()
-      perm =  numpy.random.permutation(range(A.size1()))
+      perm =  numpy.random.permutation(list(range(A.size1())))
       
       AP = A[perm,perm]
       #AP.sparsity().spy()

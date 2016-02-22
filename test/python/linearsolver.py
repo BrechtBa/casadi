@@ -65,7 +65,7 @@ def nullspacewrapper(name, sp, options):
   
 nsolvers.append((nullspacewrapper,{}))
   
-print lsolvers
+print(lsolvers)
 
 class LinearSolverTests(casadiTestCase):
 
@@ -147,12 +147,12 @@ class LinearSolverTests(casadiTestCase):
         
         V = numpy.random.rand(A.shape[0]-A.shape[1],A.shape[0]-A.shape[1])
         V = V+V.T
-        print V
+        print(V)
         #V = DMatrix.eye(A.shape[0]-A.shape[1])
         a = mul([nom,V,fd.T])+mul([fd,V,nom.T])
         b = mul([nom,V,exact.T])+mul([exact,V,nom.T])
         
-        print "here:", a-b
+        print("here:", a-b)
         
         #self.checkarray(a,b,digits=5)
     
@@ -172,7 +172,7 @@ class LinearSolverTests(casadiTestCase):
     b = MX.sym("b",b_.sparsity())
     
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       C = solve(A,b,Solver,options)
       
       f = MXFunction("f", [A,b],[C])
@@ -191,7 +191,7 @@ class LinearSolverTests(casadiTestCase):
     As = SX.sym("A",A_.sparsity())
     
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       B = pinv(A,Solver,options)
       
       f = MXFunction("f", [A],[B])
@@ -217,7 +217,7 @@ class LinearSolverTests(casadiTestCase):
     As = SX.sym("A",A_.sparsity())
     
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       B = pinv(A,Solver,options)
       
       f = MXFunction("f", [A],[B])
@@ -238,7 +238,7 @@ class LinearSolverTests(casadiTestCase):
     A = DMatrix([[3,7],[1,2]])
     b = DMatrix([1,0.5])
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       C = solve(A,b,Solver,options)
       
       self.checkarray(C,DMatrix([1.5,-0.5]))
@@ -264,7 +264,7 @@ class LinearSolverTests(casadiTestCase):
   def test_simple(self):
     A = DMatrix([[3,1],[7,2]])
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       solver = LinearSolver("solver", Solver, A.sparsity(), options)
       solver.setInput(A,"A")
 
@@ -286,7 +286,7 @@ class LinearSolverTests(casadiTestCase):
     b = MX.sym("b",b_.sparsity())
     
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       solver = LinearSolver("solver", Solver, A.sparsity(), options)
       solver.setInput(A_,"A")
       solver.setInput(b_,"B")
@@ -314,7 +314,7 @@ class LinearSolverTests(casadiTestCase):
     b = MX.sym("b",b_.sparsity())
     
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       solver = LinearSolver("solver", Solver, A.sparsity(), options)
       solver.setInput(A_,"A")
       solver.setInput(b_,"B")
@@ -350,7 +350,7 @@ class LinearSolverTests(casadiTestCase):
       A = MX.sym("A",A_.sparsity())
       b = MX.sym("b",b_.sparsity())
       for Solver, options in lsolvers:
-        print Solver
+        print(Solver)
         solver = LinearSolver("solver", Solver, A.sparsity(), options)
         for tr in [True, False]:
           x = solver.solve(A,b,tr)
@@ -396,7 +396,7 @@ class LinearSolverTests(casadiTestCase):
   def test_cholesky(self):
     numpy.random.seed(0)
     n = 10
-    L = self.randDMatrix(n,n,sparsity=0.2) +  1.5*c.diag(range(1,n+1))
+    L = self.randDMatrix(n,n,sparsity=0.2) +  1.5*c.diag(list(range(1,n+1)))
     L = L[Sparsity.lower(n)]
     M = mul(L,L.T)
     b = self.randDMatrix(n,1)
@@ -413,7 +413,7 @@ class LinearSolverTests(casadiTestCase):
     self.checkarray(mul(C,C.T),M)
     self.checkarray(C,L)
     
-    print C
+    print(C)
     
     S.getFactorizationSparsity().spy()
 
@@ -425,10 +425,10 @@ class LinearSolverTests(casadiTestCase):
   def test_cholesky2(self):
     numpy.random.seed(0)
     n = 10
-    L = c.diag(range(1,n+1))
+    L = c.diag(list(range(1,n+1)))
     M = mul(L,L.T)
 
-    print L
+    print(L)
     S = LinearSolver("S", "csparsecholesky", M.sparsity())
     
     S.getFactorizationSparsity().spy()
@@ -447,7 +447,7 @@ class LinearSolverTests(casadiTestCase):
     As = MX.sym("A",A.sparsity())
     bs = MX.sym("B",b.sparsity())
     for Solver, options in lsolvers:
-      print Solver.creator
+      print(Solver.creator)
       C = solve(A,b,Solver,options)
       
       self.checkarray(mul(A,C),b)
@@ -468,7 +468,7 @@ class LinearSolverTests(casadiTestCase):
     As = MX.sym("A",A.sparsity())
     bs = MX.sym("B",b.sparsity())
     for Solver, options in lsolvers:
-      print Solver
+      print(Solver)
       C = solve(A,b,Solver,options)
       
       self.checkarray(mul(A,C),b)

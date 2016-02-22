@@ -47,7 +47,7 @@ args = parser.parse_args()
 import sys
 sys.argv[1:] = ['-v'] + args.unittest_args
 
-from StringIO import StringIO
+from io import StringIO
 
 
 class LazyString(object):
@@ -62,7 +62,7 @@ class LazyString(object):
      
   def __str__(self):
     d = self.context
-    exec "ret = " + self.f.replace("\n","\\n") in d
+    exec("ret = " + self.f.replace("\n","\\n"), d)
     return str(d["ret"])
 
 class TeeString(StringIO):
@@ -109,7 +109,7 @@ class FunctionPool:
     self.names.append(name)
     self.flags.append(flags)
   def zip(self):
-    return zip(self.casadioperators,self.numpyoperators,self.names,self.flags)
+    return list(zip(self.casadioperators,self.numpyoperators,self.names,self.flags))
 
 
 def toSXFunction(fun):
@@ -125,7 +125,7 @@ class casadiTestCase(unittest.TestCase):
 
   def tearDown(self):
     t = time.time() - self.startTime
-    print "deltaT %s: %.3f" % ( self.id(), t)
+    print("deltaT %s: %.3f" % ( self.id(), t))
 
   def __init__(self,*margs,**kwargs):
     self.startTime = time.time()
@@ -166,7 +166,7 @@ class casadiTestCase(unittest.TestCase):
         return ret
   
   def message(self,s):
-      print s
+      print(s)
       sys.stdout.flush()
 
   def assertAlmostEqual(self,first, second, places=7, msg=""):
@@ -265,7 +265,7 @@ class casadiTestCase(unittest.TestCase):
       try:
         f.setInput(setx0[i],i)
       except Exception as e:
-         print f.getInput(i).shape
+         print(f.getInput(i).shape)
          raise e
          raise Exception("ERROR! Tried to set input with %s which is of type  %s \n%s" %(str(x0[i]), str(type(x0[i])),name))
     f.evaluate()
@@ -290,7 +290,7 @@ class casadiTestCase(unittest.TestCase):
       function=ft(x)
       frx=fr(x0)
     except Exception as e:
-      print "Error calling functions in %s" % name
+      print("Error calling functions in %s" % name)
       raise e
     self.evaluationCheck([function],frx,x,x0,name,failmessage,fmod=fmod,setx0=setx0)
 
@@ -520,7 +520,7 @@ class casadiTestCase(unittest.TestCase):
 
       # Remainder of eval testing
       for store,order in [(storage,"first-order"),(storage2,"second-order")][:evals]:
-        for stk,st in store.items():
+        for stk,st in list(store.items()):
           for i in range(len(st)-1):
             for k,(a,b) in enumerate(zip(st[0],st[i+1])):
               if b.numel()==0 and sparsify(a).nnz()==0: continue
@@ -560,14 +560,14 @@ class run_only(object):
       self.args.append(a)
 
   def __call__(self, c):
-    print "run_only:"
+    print("run_only:")
     for i in dir(c):
       if i.startswith('test_'):
         n = i[5:]
         if not n in self.args:
           delattr(c,i)
         else:
-          print i
+          print(i)
     return c
 
 class requires(object):
@@ -578,7 +578,7 @@ class requires(object):
     if hasattr(casadi,self.att):
       return c
     else:
-      print "Not available %s, skipping unittests" % self.att
+      print("Not available %s, skipping unittests" % self.att)
       return None
       
 class requiresPlugin(object):
@@ -591,7 +591,7 @@ class requiresPlugin(object):
       self.att.loadPlugin(self.n)
       return c
     except:
-      print "Not available %s plugin %s, skipping unittests" % (str(self.att),self.n)
+      print("Not available %s plugin %s, skipping unittests" % (str(self.att),self.n))
       return None
 
 class skip(object):
@@ -605,7 +605,7 @@ class skip(object):
         delattr(c,i)
       return c
     else:
-      print self.skiptext(c.__name__)
+      print(self.skiptext(c.__name__))
       return None
    
   def skiptext(self,name):
@@ -619,7 +619,7 @@ class memory_heavy(object):
     pass
     
   def __call__(self, c):
-    print c
+    print(c)
     c.tag_memory_heavy = True
     return c
     
@@ -628,6 +628,6 @@ class slow(object):
     pass
     
   def __call__(self, c):
-    print "slow", c
+    print("slow", c)
     c.tag_slow = True
     return c

@@ -37,7 +37,7 @@ from casadi import *
 ivp = DaeBuilder()
 ivp.parseFMI("modelDescription.xml")
 #! Let us have a look at the flat optimal control problem:
-print ivp
+print(ivp)
 #$ As we see, the initial-value problem (IVP) has two differential states (cstr.c and cstr.T),
 #$ two algebraic variables (cstr.Tc and q) and one control.
 #$
@@ -53,9 +53,9 @@ L = vertcat(ivp.quad)
 I = vertcat(ivp.init)
 #$ These are expressions that can be visualized or manipulated using CasADi's 
 #$ symbolic framework:
-print 5*sin(f[0])
-print jacobian(f,x)
-print hessian(L,x)
+print(5*sin(f[0]))
+print(jacobian(f,x))
+print(hessian(L,x))
 #$ The efficient calculation of derivative information such as the Jacobians and Hessians above
 #$ is one of the core strengths of CasADi. It is performed using state-of-the-art algorithms
 #$ for \emph{algorithmic differentiation}. This allows for very large symbolic expressions
@@ -83,8 +83,8 @@ tf = 150.
 #$ \end{array} $$
 #$
 #$ with
-print "f = ", f, "\nI = ", I, "\nL = ", L
-print "lbx = ", lbx, "ubx = ", ubx, "lbu = ", lbu, "ubu = ", ubu
+print("f = ", f, "\nI = ", I, "\nL = ", L)
+print("lbx = ", lbx, "ubx = ", ubx, "lbu = ", lbu, "ubu = ", ubu)
 #$ From the symbolic expressions, we can create functions (functors) for evaluating the 
 #$ ODE right hand side numerically or symbolically. The following code creates a function
 #$ with two inputs (x and u) and two outputs (f and L):
@@ -164,7 +164,7 @@ v = []; lbv = []; ubv = []; v0 = []
 nv = 0
 #$ Indices corresponding to the different parts of the the variable vector:
 vind = {'x':[], 'u':[]}
-def valloc(n, nv): return range(nv, nv+n), nv+n
+def valloc(n, nv): return list(range(nv, nv+n)), nv+n
 for k in range(nk):
    #$ States
    ind, nv = valloc(nx, nv)

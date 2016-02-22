@@ -154,7 +154,7 @@ def minimize(f,gl=[],verbose=False):
     elif g.isOperation(OP_EQ):
       g_eq.append(g.getDep(0)-g.getDep(1))
     else:
-      print g
+      print(g)
       raise Exception("Constrained type unknown. Use ==, >= or <= .")
       
   # Get an exhausive list of all casadi symbols that make up f and gl
@@ -190,7 +190,7 @@ def minimize(f,gl=[],verbose=False):
   def linear(g):
     return jacobian(g,X),substitute(g,X,DMatrix.zeros(X.size))
   
-  (A_le,b_le),(A_eq,b_eq),(A_nsd,b_nsd),(A_f,b_f) = map(linear,G)
+  (A_le,b_le),(A_eq,b_eq),(A_nsd,b_nsd),(A_f,b_f) = list(map(linear,G))
   
   if A_le.shape[1]==0:
     A_le = DMatrix.zeros(0,X.size)
@@ -291,7 +291,7 @@ def value(e,nums={}):
     f,xp = OptimizationContext.eval_cache[e]
   else:
     # Get an exhausive list of all casadi symbols that make up f and gl
-    vars = nums.keys() if nums else getSymbols(e)
+    vars = list(nums.keys()) if nums else getSymbols(e)
     
     # Find out which OptimizationParameter and 
     # OptimizationVariable objects correspond to those casadi symbols

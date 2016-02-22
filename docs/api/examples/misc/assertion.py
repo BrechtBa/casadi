@@ -36,7 +36,7 @@ f = MXFunction("f", [x],[z])
 f.setInput(5)
 f.evaluate()
 
-print f.getOutput()
+print(f.getOutput())
 
 #! For some mysterious reason we get NaN here
 
@@ -51,8 +51,8 @@ f.setInput(5)
 try:
   f.evaluate()
 except Exception as e:
-  print "An exception was raised here:"
-  print e
+  print("An exception was raised here:")
+  print(e)
 
 
 #! You can combine this with CustomFunction to do powerful assertions
@@ -61,7 +61,7 @@ def dummy(f):
   import numpy
   x = f.getInput()
   m = max(numpy.real(numpy.linalg.eig(blockcat([[x,-1],[-1,2]]))[0]))
-  print "m=",m
+  print("m=",m)
   f.setOutput(int(m>2))
 
 

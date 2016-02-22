@@ -40,7 +40,7 @@ for line in file('../Doxyfile.in','r'):
     if m:
       aliases[m.group(1)]=m.group(2)
 
-print aliases
+print(aliases)
 
 
 def astext(node,whitespace=False,escape=True,strictspacing=False):
@@ -84,7 +84,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
         for e3 in e2.getElementsByTagName("node"):
           for e4 in e3.getElementsByTagName("label"):
             if "Node" in e4.firstChild.data:
-              print "skipped"
+              print("skipped")
               try:
                 self.xmldoc.removeChild(e)
               except:
@@ -190,14 +190,14 @@ class Doxy2SWIG_X(Doxy2SWIG):
           if "SparsityInterface" in refid: filtered = False
           if filtered: continue
 
-          print c.attributes['refid'].value, c.attributes['kind'].value
+          print(c.attributes['refid'].value, c.attributes['kind'].value)
 
           fname = refid + '.xml'
           if not os.path.exists(fname):
               fname = os.path.join(self.my_dir,  fname)
           if fname.endswith("cpp.xml"): continue
           if not self.quiet:
-              print "parsing file: %s"%fname
+              print("parsing file: %s"%fname)
           p = Doxy2SWIG_X(fname, self.include_function_definition, self.quiet,internal=self.internal,deprecated=self.deprecated,merge=self.merge,groupdoc=self.groupdoc)
           p.generate()
           self.pieces.extend(self.clean_pieces(p.pieces))
@@ -279,17 +279,17 @@ class Doxy2SWIG_X(Doxy2SWIG):
 
       if kind in ('class', 'struct'):
           prot = node.attributes['prot'].value
-          if prot <> 'public':
+          if prot != 'public':
               return
           names = ('compoundname', 'briefdescription',
                    'detaileddescription', 'includes')
           first = self.get_specific_nodes(node, names)
           for n in names:
-              if first.has_key(n):
+              if n in first:
                   self.parse(first[n])
           self.end_docstring()
           for n in node.childNodes:
-              if n not in first.values():
+              if n not in list(first.values()):
                   self.parse(n)
       elif kind in ('file', 'namespace'):
           nodes = node.getElementsByTagName('sectiondef')
@@ -301,7 +301,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
                      'detaileddescription', 'includes')
             first = self.get_specific_nodes(node, names)
             for n in names:
-                if first.has_key(n):
+                if n in first:
                     self.parse(first[n])
             self.end_docstring()
 
@@ -324,7 +324,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
           if name[:8] == 'operator': # Don't handle operators yet.
               return
 
-          if not first.has_key('definition') or \
+          if 'definition' not in first or \
                  kind in ['variable', 'typedef']:
               return
 
@@ -354,7 +354,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
               
           self.start_docstring(target,defn)
           for n in node.childNodes:
-              if n not in first.values():
+              if n not in list(first.values()):
                   self.parse(n)
           self.end_docstring()
 
@@ -374,7 +374,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
       self.add_text_original(value)
     else:
       #print self.active_docstring, self.docstringmap[self.active_docstring[0]], value
-      if type(value) in (types.ListType, types.TupleType):
+      if type(value) in (list, tuple):
           self.docstringmap[self.active_docstring[0]][-1][1].extend(value)
       else:
           self.docstringmap[self.active_docstring[0]][-1][1].append(value)
@@ -388,7 +388,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
       except Exception as e:
         publicapi = None
       Doxy2SWIG.generate(self)
-      for k, v in self.docstringmap.iteritems():
+      for k, v in self.docstringmap.items():
         if k.startswith("plugin_"):
           groupdoc[k] = v[0][1]
           break
@@ -449,10 +449,10 @@ class Doxy2SWIG_X(Doxy2SWIG):
           else:
             self.deprecated[swigname] = ""
               
-          total = u"".join(pieces)
+          total = "".join(pieces)
           totalnowrap = total.replace("\n"," ")
           if (aliases["noswig"] in totalnowrap) or (aliases["nopython"] in totalnowrap):
-             print "skipping", origin
+             print("skipping", origin)
              continue
           if total in grouped_dict:
              grouped_dict[total][0].append(origin)
@@ -468,7 +468,7 @@ class Doxy2SWIG_X(Doxy2SWIG):
           else:
             self.add_text_original(["%feature(\"docstring\") ",k , " \"\n"])
             for (origin,pieces) in grouped_list:
-              if len(u"".join(pieces).rstrip())>0:
+              if len("".join(pieces).rstrip())>0:
                 self.add_text_original(["\n"]+["\n>  " + swig_typename_convertor_cpp2python(o.replace('"',r'\"')) + '\n'  for o in origin] + ["-"*(80-8) + "\n"] + pieces + ["\n"])
             self.add_text_original(["\";\n","\n"])
   
@@ -507,12 +507,12 @@ if __name__ == '__main__':
     deprecated = dict()
     groupdoc = dict()
     convert(args[0], args[1], False, options.quiet,internal=internal,deprecated=deprecated,merge=options.merge,groupdoc=groupdoc)
-    file(args[2],'w').write("\n".join(sorted(filter(lambda x: len(x)>0, internal.values()))))
-    file(args[3],'w').write("\n".join(sorted(filter(lambda x: len(x)>0, deprecated.values()))))
+    file(args[2],'w').write("\n".join(sorted([x for x in list(internal.values()) if len(x)>0])))
+    file(args[3],'w').write("\n".join(sorted([x for x in list(deprecated.values()) if len(x)>0])))
     import pickle
     filemap = pickle.load(file('filemap.pkl','r'))
     
-    for k,v in groupdoc.iteritems():
+    for k,v in groupdoc.items():
       fn,n = filemap[k]
       f = file(fn.replace(".hpp","_meta.cpp"),"w")
       f.write(file('../../../misc/license_header.txt','r').read())

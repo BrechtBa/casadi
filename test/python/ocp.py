@@ -197,20 +197,20 @@ class OCPtests(casadiTestCase):
     self.assertTrue(len(ivp.y)==1)
     m = vertcat(ivp.ydef)
     self.assertTrue(isinstance(m,MX))
-    self.assertEquals(str(m),'cost')
-    print dir(ivp)
-    self.assertEquals(len(ivp.dae),3)
-    print type(ivp.s)
-    self.assertEquals(len(ivp.s),3) # there are three states
+    self.assertEqual(str(m),'cost')
+    print(dir(ivp))
+    self.assertEqual(len(ivp.dae),3)
+    print(type(ivp.s))
+    self.assertEqual(len(ivp.s),3) # there are three states
     c = ivp("cstr.c")
     T = ivp("cstr.T")
     cost = ivp("cost")
     self.assertTrue(isinstance(c,MX))
     
-    self.assertEquals(c.getName(),"cstr.c")
-    self.assertEquals(T.getName(),"cstr.T")
-    self.assertEquals(cost.getName(),"cost")
-    self.assertEquals(ivp.nominal("cstr.c"),1000)
+    self.assertEqual(c.getName(),"cstr.c")
+    self.assertEqual(T.getName(),"cstr.T")
+    self.assertEqual(cost.getName(),"cost")
+    self.assertEqual(ivp.nominal("cstr.c"),1000)
    
     u = ivp("u")
     #self.assertEquals(ivp.path.nnz(),3)
@@ -225,8 +225,8 @@ class OCPtests(casadiTestCase):
     #self.assertEquals(ivp.cfcn_ub[0].getValue(),350) 
     #self.assertTrue(ivp.cfcn_ub[1].isInf())
     #self.assertEquals(ivp.cfcn_ub[2].getValue(),370) 
-    print ivp.init
-    print c,T,cost
+    print(ivp.init)
+    print(c,T,cost)
     #print c.atTime(0)
     f=MXFunction('f', [vertcat([c,T,cost])],[vertcat(ivp.init)])
     return 

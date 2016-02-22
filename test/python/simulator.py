@@ -140,7 +140,7 @@ class Simulatortests(casadiTestCase):
       f.setInput(0.3,"x0")
       f.setInput(0.7,"p")
       f.setInput(2,"u")
-      f.setInput(DMatrix(range(1,N)).T/10,"u")
+      f.setInput(DMatrix(list(range(1,N))).T/10,"u")
     
     self.checkfunction(sim,solution,adj=False,jacobian=False,sens_der=False,evals=False,digits=6)
     

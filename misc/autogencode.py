@@ -111,7 +111,7 @@ class Enum:
       if not(len(e))==3:
          raise Exception("Consistency"+str(e))
 
-    print self.enum, self.__class__.__name__
+    print(self.enum, self.__class__.__name__)
     assert(self.enum.endswith(self.__class__.__name__))
     prefix = self.enum[:-len(self.__class__.__name__)]
 
@@ -124,7 +124,7 @@ class Enum:
     return str(len(self.entries))
 
   def hppcode(self):
-    s= "\n".join(map(lambda x: ("/// " + x).rstrip(),self.doc.split("\n")))+"\n"
+    s= "\n".join([("/// " + x).rstrip() for x in self.doc.split("\n")])+"\n"
     s+= "/// \\copydoc scheme_" + self.enum +  "\n"
     s+= "template<class M>" + "\n"
     s+= "std::pair<std::map<std::string, M>, std::vector<std::string> > " + self.name + "("
@@ -173,7 +173,7 @@ class Enum:
     s+= "  Usage:\n"
     s+= "    arg = %s(%s)\n" % (self.name , ", ".join(["%s=my_%s" % (name,name) for name, doc, enum in self.entries]))
     s+= "        all arguments optional\n"
-    s+= "\n".join(map(lambda x: "  " + x.rstrip(),self.getDoc().split("\n"))) + "\n"
+    s+= "\n".join(["  " + x.rstrip() for x in self.getDoc().split("\n")]) + "\n"
     s+= "  Keyword arguments::\n\n"
     maxlenname = max([len(name) for name, doc, enum in self.entries])
     for name, doc, enum in self.entries:
@@ -219,13 +219,13 @@ class LazyFile(object):
       with open(self._path,'r') as content_file:
         old_content = content_file.read()
       if old_content == new_content:
-        print '(unchanged) "' + self._path + '"'
+        print('(unchanged) "' + self._path + '"')
       else:
-        print '(changed)   "' + self._path + '"'
+        print('(changed)   "' + self._path + '"')
         self._reallyWrite(new_content)
 
     else:
-      print '(new)       "' + self._path + '"'
+      print('(new)       "' + self._path + '"')
       self._reallyWrite(new_content)
 
 
@@ -308,7 +308,7 @@ autogenmetadatahpp.write("CASADI_EXPORT std::string getSchemeName(InputOutputSch
 autogenmetadatahpp.write("CASADI_EXPORT std::string getSchemeEntryNames(InputOutputScheme scheme);\n")
 
 for p in schemes:
-  print p.name
+  print(p.name)
   autogencpp.write(p.cppcode())
   autogenhelpershpp.write(p.hppcode())
   autogenpy.write("#ifdef SWIGPYTHON\n")

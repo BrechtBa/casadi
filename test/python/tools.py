@@ -36,7 +36,7 @@ class Toolstests(casadiTestCase):
   
     s = struct(['x','y','z'])
     
-    print s
+    print(s)
   
     with self.assertRaises(Exception):
       struct_symSX(['x','x','z'])
@@ -363,7 +363,7 @@ class Toolstests(casadiTestCase):
     init['X',0,-1,'p',:] = repeated([1,2,3,4,5,6])
     self.checkarray(init['X',0,-1,'p',vertcat,:,2],DMatrix.ones(9)*3)
     
-    init = shooting(DMatrix(range(shooting.size)))
+    init = shooting(DMatrix(list(range(shooting.size))))
 
     self.checkarray(init['X',vertcat,:,horzcat,:],init['X',blockcat,:,:])
 
@@ -371,25 +371,25 @@ class Toolstests(casadiTestCase):
 
     init['X',:,:,['x','y']] = repeated(repeated([6,5]))
 
-    print init.cat
+    print(init.cat)
 
     init['X',:,:,{}] = repeated(repeated({'x': 9,'y': 3}))
 
-    print init.cat
+    print(init.cat)
     
     V = struct_SX(shooting)
     
     V['X',:,:,['x','y']] = repeated(repeated([6,5]))
     
-    print V
+    print(V)
     
     V = struct_symMX(shooting)
     
-    print V
+    print(V)
     
     V = struct_MX(shooting)
     
-    print V
+    print(V)
     
     
     init = shooting(nan)
@@ -422,12 +422,12 @@ class Toolstests(casadiTestCase):
     init['X',:,:,'v',blockcat] = repeated(DMatrix.ones(4,2)*7)
     self.assertEqual(sum(init.cat==7),4*2*4*5)
     
-    init['X',0,0,'p',:] = range(9)
+    init['X',0,0,'p',:] = list(range(9))
     
     
-    print index["a"]
+    print(index["a"])
 
-    init = shooting(range(shooting.size))
+    init = shooting(list(range(shooting.size)))
     for i in range(shooting.size):
       ci = shooting.getCanonicalIndex(i)
       self.assertEqual(i, init.__getitem__(ci))
@@ -439,8 +439,8 @@ class Toolstests(casadiTestCase):
 
     S = struct_symSX([entry("X",repeat=12,struct=s)])
 
-    print S.__class__
-    print S.prefix
+    print(S.__class__)
+    print(S.prefix)
 
     a = S.prefix["X"]
 
@@ -460,10 +460,10 @@ class Toolstests(casadiTestCase):
     d = DMatrix.zeros(s.size,12)
     a = s.repeated(d)
     
-    a[:,"x"] = range(12)
+    a[:,"x"] = list(range(12))
     
     self.checkarray(a[4,"x"],DMatrix([4]))
-    self.checkarray(d,vertcat([DMatrix(range(12)).T,DMatrix.zeros(1,12),DMatrix.zeros(1,12)]))
+    self.checkarray(d,vertcat([DMatrix(list(range(12))).T,DMatrix.zeros(1,12),DMatrix.zeros(1,12)]))
 
   def test_structure_squared_dmatrix(self):
     self.message("squared dmatrix")
@@ -505,9 +505,9 @@ class Toolstests(casadiTestCase):
     d = DMatrix.zeros(3,3)
     a = s.squared(d)
     
-    print type(a)
-    print sin(a)
-    print a+1
+    print(type(a))
+    print(sin(a))
+    print(a+1)
     
   def test_sparse(self):
     a = struct_symSX([entry("a",shape=Sparsity.diag(5))])
@@ -526,7 +526,7 @@ class Toolstests(casadiTestCase):
     self.checkarray(a["P"].shape,(3,3))
     
     f = SXFunction("f", [a],[a["P"]])
-    f.setInput(range(6))
+    f.setInput(list(range(6)))
     f.evaluate()
     
     self.checkarray(f.getOutput(),DMatrix([[0,1,3],[1,2,4],[3,4,5]]))
@@ -585,14 +585,14 @@ class Toolstests(casadiTestCase):
     a = struct_symSX([entry("a",shape=(5,3)),entry("b",shape=(4,3))])
     b = a()
     
-    b["a",vec] = range(15)
-    self.checkarray(b.cat,DMatrix(range(15)+[0]*12))
+    b["a",vec] = list(range(15))
+    self.checkarray(b.cat,DMatrix(list(range(15))+[0]*12))
     
-    self.checkarray(b["a",vec],DMatrix(range(15)))
+    self.checkarray(b["a",vec],DMatrix(list(range(15))))
     
-    b["a",vec] = range(15)
+    b["a",vec] = list(range(15))
 
-    self.checkarray(b["a",vec],DMatrix(range(15)))
+    self.checkarray(b["a",vec],DMatrix(list(range(15))))
     
   def test_pickling(self):
     import pickle
@@ -626,10 +626,10 @@ class Toolstests(casadiTestCase):
     x_init['states', int64(0), 'x']
     
   def test_numpyint(self):
-    s = struct_symSX(map(entry, 'xyz')) # OK 
-    print s['x']
-    s = struct_symSX(map(entry, u'xyz')) # IndexError: list index out of range
-    print s[u'x']
+    s = struct_symSX(list(map(entry, 'xyz'))) # OK 
+    print(s['x'])
+    s = struct_symSX(list(map(entry, 'xyz'))) # IndexError: list index out of range
+    print(s['x'])
     
   def test_pickling_null(self):
     import pickle
@@ -640,7 +640,7 @@ class Toolstests(casadiTestCase):
 
     tt = pickle.dumps(s)
 
-    print pickle.loads(tt)
+    print(pickle.loads(tt))
     
   def test_bug_structSXMX(self):
     n= 2
@@ -655,32 +655,32 @@ class Toolstests(casadiTestCase):
     ])
     
     X_sx = struct_SX(x_sx)
-    X_sx["x"] = DMatrix(range(n))
-    X_sx["S"] = c.reshape(DMatrix(range(n,n+n*n)),n,n)
+    X_sx["x"] = DMatrix(list(range(n)))
+    X_sx["S"] = c.reshape(DMatrix(list(range(n,n+n*n))),n,n)
    
     X_mx = struct_MX(x_sx)
-    X_mx["x"] = DMatrix(range(n))
-    X_mx["S"] = c.reshape(DMatrix(range(n,n+n*n)),n,n)
+    X_mx["x"] = DMatrix(list(range(n)))
+    X_mx["S"] = c.reshape(DMatrix(list(range(n,n+n*n))),n,n)
     
-    self.checkarray(x_sx.struct.map[("S",)],c.reshape(DMatrix(range(n,n+n*n)),n,n))
-    self.checkarray(x_mx.struct.map[("S",)],c.reshape(DMatrix(range(n,n+n*n)),n,n))
-    self.checkarray(X_sx.cat,DMatrix(range(n+n*n)))
-    self.checkarray(X_mx.cat,DMatrix(range(n+n*n)))
+    self.checkarray(x_sx.struct.map[("S",)],c.reshape(DMatrix(list(range(n,n+n*n))),n,n))
+    self.checkarray(x_mx.struct.map[("S",)],c.reshape(DMatrix(list(range(n,n+n*n))),n,n))
+    self.checkarray(X_sx.cat,DMatrix(list(range(n+n*n))))
+    self.checkarray(X_mx.cat,DMatrix(list(range(n+n*n))))
     
     for s, S in [(x_sx,struct_symSX),(x_mx,struct_symMX)]:
       h = S([entry("w",struct=s)])
       hX = struct_SX(h)
-      hX["w","x"] = DMatrix(range(n))
-      hX["w","S"] = c.reshape(DMatrix(range(n,n+n*n)),n,n) 
+      hX["w","x"] = DMatrix(list(range(n)))
+      hX["w","S"] = c.reshape(DMatrix(list(range(n,n+n*n))),n,n) 
       
-      self.checkarray(h.struct.map[("w","S",)],c.reshape(DMatrix(range(n,n+n*n)),n,n))
-      self.checkarray(hX.cat,DMatrix(range(n+n*n)))
+      self.checkarray(h.struct.map[("w","S",)],c.reshape(DMatrix(list(range(n,n+n*n))),n,n))
+      self.checkarray(hX.cat,DMatrix(list(range(n+n*n))))
       
-      self.checkarray(h.struct.map[("w",)],DMatrix(range(n+n*n)))
-      self.checkarray(hX["w"],DMatrix(range(n+n*n)))
+      self.checkarray(h.struct.map[("w",)],DMatrix(list(range(n+n*n))))
+      self.checkarray(hX["w"],DMatrix(list(range(n+n*n))))
       
-      hX["w"] = DMatrix(range(n+n*n))
-      self.checkarray(hX.cat,DMatrix(range(n+n*n)))
+      hX["w"] = DMatrix(list(range(n+n*n)))
+      self.checkarray(hX.cat,DMatrix(list(range(n+n*n))))
     
     n= 2
     m = 3
@@ -695,17 +695,17 @@ class Toolstests(casadiTestCase):
     ])
     
     X_sx = struct_SX(x_sx)
-    X_sx["x"] = DMatrix(range(n))
-    X_sx["S"] = c.reshape(DMatrix(range(n,n+n*m)),n,m)
+    X_sx["x"] = DMatrix(list(range(n)))
+    X_sx["S"] = c.reshape(DMatrix(list(range(n,n+n*m))),n,m)
    
     X_mx = struct_MX(x_sx)
-    X_mx["x"] = DMatrix(range(n))
-    X_mx["S"] = c.reshape(DMatrix(range(n,n+n*m)),n,m)
+    X_mx["x"] = DMatrix(list(range(n)))
+    X_mx["S"] = c.reshape(DMatrix(list(range(n,n+n*m))),n,m)
     
-    self.checkarray(x_sx.struct.map[("S",)],c.reshape(DMatrix(range(n,n+n*m)),n,m))
-    self.checkarray(x_mx.struct.map[("S",)],c.reshape(DMatrix(range(n,n+n*m)),n,m))
-    self.checkarray(X_sx.cat,DMatrix(range(n+n*m)))
-    self.checkarray(X_mx.cat,DMatrix(range(n+n*m)))
+    self.checkarray(x_sx.struct.map[("S",)],c.reshape(DMatrix(list(range(n,n+n*m))),n,m))
+    self.checkarray(x_mx.struct.map[("S",)],c.reshape(DMatrix(list(range(n,n+n*m))),n,m))
+    self.checkarray(X_sx.cat,DMatrix(list(range(n+n*m))))
+    self.checkarray(X_mx.cat,DMatrix(list(range(n+n*m))))
     
     n = 3
     x_sx = struct_symSX([
@@ -719,17 +719,17 @@ class Toolstests(casadiTestCase):
     ])
     
     X_sx = struct_SX(x_sx)
-    X_sx["x"] = DMatrix(range(n))
-    X_sx["S"] = DMatrix(Sparsity.upper(n),range(n,n+n*(n+1)/2))
+    X_sx["x"] = DMatrix(list(range(n)))
+    X_sx["S"] = DMatrix(Sparsity.upper(n),list(range(n,n+n*(n+1)/2)))
    
     X_mx = struct_MX(x_sx)
-    X_mx["x"] = DMatrix(range(n))
-    X_mx["S"] = DMatrix(Sparsity.upper(n),range(n,n+n*(n+1)/2))
+    X_mx["x"] = DMatrix(list(range(n)))
+    X_mx["S"] = DMatrix(Sparsity.upper(n),list(range(n,n+n*(n+1)/2)))
     
-    self.checkarray(x_sx.struct.map[("S",)],DMatrix(Sparsity.upper(n),range(n,n+n*(n+1)/2)))
-    self.checkarray(x_mx.struct.map[("S",)],DMatrix(Sparsity.upper(n),range(n,n+n*(n+1)/2)))
-    self.checkarray(X_sx.cat,DMatrix(range(n+n*(n+1)/2)))
-    self.checkarray(X_mx.cat,DMatrix(range(n+n*(n+1)/2)))
+    self.checkarray(x_sx.struct.map[("S",)],DMatrix(Sparsity.upper(n),list(range(n,n+n*(n+1)/2))))
+    self.checkarray(x_mx.struct.map[("S",)],DMatrix(Sparsity.upper(n),list(range(n,n+n*(n+1)/2))))
+    self.checkarray(X_sx.cat,DMatrix(list(range(n+n*(n+1)/2))))
+    self.checkarray(X_mx.cat,DMatrix(list(range(n+n*(n+1)/2))))
     
   def test_MX_result(self):
     s = struct_symMX(["a",entry("b",shape=2),entry("c",shape=(2,2))])
@@ -738,7 +738,7 @@ class Toolstests(casadiTestCase):
 
     d = s(V)
 
-    print d["b"]
+    print(d["b"])
 
     f = MXFunction("f", [V],[d["a"],d["b"],d["c"]])
 
@@ -780,7 +780,7 @@ class Toolstests(casadiTestCase):
       J = states.product(controls,J)
 
       f = F("f", [J],[J["x","v"], J["x",:] , J["y",["v","w"]],  J[:,"u"] ])
-      f.setInputNZ(range(1,7))
+      f.setInputNZ(list(range(1,7)))
 
       f.evaluate()
 

@@ -87,8 +87,8 @@ integrator = Integrator("integrator", "cvodes", fmod, opts)
 #$   [x(tf),q(tf),rx(t0),rq(t0)]  = F(x(t0),p,rx(0),rp)
 #$ \end{verbatim}
 #$ 
-print isinstance(integrator,Function)
-print "%d -> %d" % (integrator.nIn(),integrator.nOut())
+print(isinstance(integrator,Function))
+print("%d -> %d" % (integrator.nIn(),integrator.nOut()))
 #! Setup the Integrator to integrate from 0 to t=tend, starting at [x0,y0]
 #! The output of Integrator is the state at the end of integration.
 #! There are two basic mechanisms two retrieve the whole trajectory of states:
@@ -126,7 +126,7 @@ sim.evaluate()
 
 sol2 = sim.getOutput().toArray().T
 #! sol and sol2 are exactly the same
-print linalg.norm(sol-sol2)
+print(linalg.norm(sol-sol2))
 
 #! Sensitivity for initial conditions
 #! ------------------------------------
@@ -221,8 +221,8 @@ def out(u):
 	f.evaluate()
 	return f.getOutput().toArray()
 
-print out(0)
-print out(1)
+print(out(0))
+print(out(1))
 
 #! Let's plot the results
 uv=numpy.linspace(-1,1,100)

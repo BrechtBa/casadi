@@ -53,7 +53,7 @@ def pyrep(indir,name,outdir):
 	  pass
 	
 	cmd= 'cd %s && grep -v "^#[^\!]" %s > temp.py && pyreport -d -l temp.py -o %s' % (indir,name,pdfname)
-	print cmd
+	print(cmd)
 	os.system(cmd)
 	try:
 	  os.remove(os.path.join(indir,"temp.py"))
@@ -66,14 +66,14 @@ def pyrep(indir,name,outdir):
 		if os.path.exists(os.path.join(outdir,pdfname)):
 			os.remove(os.path.join(outdir,pdfname))
 			os.rename(os.path.join(indir,pdfname), os.path.join(outdir,pdfname))
-		print "Couldn't move to output directory."
+		print("Couldn't move to output directory.")
 		pass 
 		
 for root, dirs, files in os.walk(src):
 	for name in files:
 		if '.svn' in dirs:
 			dirs.remove('.svn') # don't visit svn folders
-		if len(args)>0 and all(map(lambda a: name.find(a)==-1,args)):
+		if len(args)>0 and all([name.find(a)==-1 for a in args]):
 			continue
 		if name.endswith('.py') and name!="temp.py":
 			relroot=os.path.relpath(root,src)

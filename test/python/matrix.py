@@ -54,25 +54,25 @@ class Matrixtests(casadiTestCase):
     L = []
     for i in DMatrix([5,6,7,8]):
       L.append(i)
-    self.assertEquals(L[0],5)
-    self.assertEquals(L[1],6)
-    self.assertEquals(L[2],7)
-    self.assertEquals(L[3],8)
+    self.assertEqual(L[0],5)
+    self.assertEqual(L[1],6)
+    self.assertEqual(L[2],7)
+    self.assertEqual(L[3],8)
     
   def test_tuple_unpacking(self):
     self.message("tuple unpacking")
     (a,b,c,d) = DMatrix([5,6,7,8])
-    self.assertEquals(a,5)
-    self.assertEquals(b,6)
-    self.assertEquals(c,7)
-    self.assertEquals(d,8)
+    self.assertEqual(a,5)
+    self.assertEqual(b,6)
+    self.assertEqual(c,7)
+    self.assertEqual(d,8)
     
   def test_trans(self):
     self.message("trans")
     a = DMatrix(0,1)
     b = a.T
-    self.assertEquals(b.size1(),1)
-    self.assertEquals(b.size2(),0)
+    self.assertEqual(b.size1(),1)
+    self.assertEqual(b.size2(),0)
         
   def test_vertcat(self):
     self.message("vertcat")
@@ -111,7 +111,7 @@ class Matrixtests(casadiTestCase):
 
     for f in [fMX,fSX]:
       for i in range(3):
-        f.setInput(range(f.input(i).nnz()),i)
+        f.setInput(list(range(f.input(i).nnz())),i)
       
     self.checkfunction(fMX,fSX)
     
@@ -588,34 +588,34 @@ class Matrixtests(casadiTestCase):
           
     
     # get1
-    check(IMatrix(Sparsity.dense(3,3),range(3*3)),[0,1,2],[0,1,2])
-    check(IMatrix(Sparsity.dense(4,4),range(4*4)),[0,1,3],[0,2,3])
-    check(IMatrix(Sparsity.dense(3,3),range(3*3)),[0,0,1],[0,0,1])
-    check(IMatrix(Sparsity.dense(3,3),range(3*3)),[0,0,2],[0,0,2])
-    check(IMatrix(Sparsity.dense(3,3),range(3*3)),[1,1,2],[1,1,2])
+    check(IMatrix(Sparsity.dense(3,3),list(range(3*3))),[0,1,2],[0,1,2])
+    check(IMatrix(Sparsity.dense(4,4),list(range(4*4))),[0,1,3],[0,2,3])
+    check(IMatrix(Sparsity.dense(3,3),list(range(3*3))),[0,0,1],[0,0,1])
+    check(IMatrix(Sparsity.dense(3,3),list(range(3*3))),[0,0,2],[0,0,2])
+    check(IMatrix(Sparsity.dense(3,3),list(range(3*3))),[1,1,2],[1,1,2])
 
     sp = Sparsity.lower(4)
-    d = IMatrix(sp,range(sp.nnz()))
+    d = IMatrix(sp,list(range(sp.nnz())))
     check(d,[0,1,3],[0,2,3])
     check(d.T,[0,1,3],[0,2,3])
 
     sp = Sparsity.rowcol([0,1,2],[0,1],4,4)
-    d = IMatrix(sp,range(sp.nnz()))
+    d = IMatrix(sp,list(range(sp.nnz())))
     check(d,[0,3],[0,2])
     
     # get2
-    check(IMatrix(Sparsity.dense(2,2),range(2*2)),[0,0,0],[0,0,0])
-    check(IMatrix(Sparsity.dense(2,2),range(2*2)),[0,0,1],[0,0,1])
-    check(IMatrix(Sparsity.dense(2,2),range(2*2)),[1,1,0],[1,1,0])
-    check(IMatrix(Sparsity.dense(2,2),range(2*2)),[1,1,1],[1,1,1])
+    check(IMatrix(Sparsity.dense(2,2),list(range(2*2))),[0,0,0],[0,0,0])
+    check(IMatrix(Sparsity.dense(2,2),list(range(2*2))),[0,0,1],[0,0,1])
+    check(IMatrix(Sparsity.dense(2,2),list(range(2*2))),[1,1,0],[1,1,0])
+    check(IMatrix(Sparsity.dense(2,2),list(range(2*2))),[1,1,1],[1,1,1])
 
     sp = Sparsity.lower(3)
-    d = IMatrix(sp,range(sp.nnz()))
+    d = IMatrix(sp,list(range(sp.nnz())))
     check(d,[0,1,2],[0,1,2])
     check(d.T,[0,1,2],[0,1,2])
     
     sp = Sparsity.rowcol([0,2],[0,1],4,4)
-    d = IMatrix(sp,range(sp.nnz()))
+    d = IMatrix(sp,list(range(sp.nnz())))
     check(d,[0,1,3],[0,2,3])
 
   def test_sparsesym(self):
@@ -718,14 +718,14 @@ class Matrixtests(casadiTestCase):
     self.assertEqual(sparsify(DMatrix([[1,1,0],[1,0,1],[0,0,0]])).sizeU(),3)
     
   def test_tril2symm(self):
-    a = DMatrix(Sparsity.upper(3),range(Sparsity.upper(3).nnz())).T
+    a = DMatrix(Sparsity.upper(3),list(range(Sparsity.upper(3).nnz()))).T
     s = tril2symm(a)
     self.checkarray(s,DMatrix([[0,1,3],[1,2,4],[3,4,5]]))
     
     with self.assertRaises(Exception):
       tril2symm(DMatrix.ones(5,3))
     
-    print DMatrix.ones(5,5).sizeU()-DMatrix.ones(5,5).sizeD()
+    print(DMatrix.ones(5,5).sizeU()-DMatrix.ones(5,5).sizeD())
     
     with self.assertRaises(Exception):
       tril2symm(DMatrix.ones(5,5))
@@ -769,7 +769,7 @@ class Matrixtests(casadiTestCase):
     self.assertEqual(v.size2(),0)
   
   def test_vertsplit(self):
-    a = DMatrix(Sparsity.upper(5),range(5*6/2)).T
+    a = DMatrix(Sparsity.upper(5),list(range(5*6/2))).T
     v = vertsplit(a,[0,2,4,5])
     
     self.assertEqual(len(v),3)
@@ -799,7 +799,7 @@ class Matrixtests(casadiTestCase):
     self.checkarray(v[2],DMatrix([[6,7,8,9,0],[10,11,12,13,14]]))
     
   def test_horzsplit(self):
-    a = DMatrix(Sparsity.upper(5),range(5*6/2)).T
+    a = DMatrix(Sparsity.upper(5),list(range(5*6/2))).T
     v = horzsplit(a,[0,2,4,5])
     
     self.assertEqual(len(v),3)
@@ -829,7 +829,7 @@ class Matrixtests(casadiTestCase):
     self.checkarray(v[2],DMatrix([[0,0],[0,0],[0,0],[9,0],[13,14]]))
     
   def test_blocksplit(self):
-    a = DMatrix(Sparsity.upper(5),range(5*6/2)).T
+    a = DMatrix(Sparsity.upper(5),list(range(5*6/2))).T
     v = blocksplit(a,[0,2,4,5],[0,1,3,5])
     
     self.checkarray(v[0][0],DMatrix([0,1]))
@@ -884,16 +884,16 @@ class Matrixtests(casadiTestCase):
         
         c = f.getOutput()
         
-        print sA.dimString(), sB.dimString()
+        print(sA.dimString(), sB.dimString())
 
         try:
           self.checkarray(c,c_ref)
           self.assertTrue(min(IMatrix.ones(c_ref.sparsity())-IMatrix.ones(c.sparsity()))==0)
         except Exception as e:
           c.printDense()
-          print "sol:"
+          print("sol:")
           c.sparsity().spy()
-          print "ref:"
+          print("ref:")
           c_ref.sparsity().spy()
           c_ref.printDense()
           a.sparsity().sanityCheck()

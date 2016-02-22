@@ -27,6 +27,7 @@ from subprocess import *
 import time
 import re
 import tempfile
+import collections
 
 class TimeoutEvent(Exception):
     pass
@@ -71,7 +72,7 @@ def run(args, input=None, cwd = None, shell = False, kill_tree = True, timeout =
     try:
         t0 = time.time()
         stdout, stderr = p.communicate()
-        print "Ran for", time.time()-t0, "seconds."
+        print("Ran for", time.time()-t0, "seconds.")
         if timeout != -1:
             alarm(0)
     except Alarm:
@@ -107,8 +108,8 @@ def get_process_children(pid):
     return [int(p) for p in stdout.split()]
 
 if __name__ == '__main__':
-    print run('find /', shell = True, timeout = 3)
-    print run('find', shell = True)
+    print(run('find /', shell = True, timeout = 3))
+    print(run('find', shell = True))
 
 deprecated = re.compile("[dD]epr[ei]c[ie]?at[ei]")
 warning = re.compile("warning")
@@ -193,10 +194,10 @@ class TestSuite:
         self.passoptions+=m.group(1).split(' ')
         okay = True
       if not(okay):
-        print "Unknown argument: ", arg
+        print("Unknown argument: ", arg)
 
   def run(self):
-    print "Running test in " + self.dirname
+    print("Running test in " + self.dirname)
     for root, dirs, files in os.walk(self.dirname):
       if not(self.preRun is None):
         self.preRun(root)
@@ -210,7 +211,7 @@ class TestSuite:
       if not(self.postRun is None):
         self.postRun(root)
         
-    print "Ran %d tests, %d fails." % (self.stats['numtests'],self.stats['numfails'])
+    print("Ran %d tests, %d fails." % (self.stats['numtests'],self.stats['numfails']))
 
     if self.stats['numfails']>0:
       sys.exit(1)
@@ -218,13 +219,13 @@ class TestSuite:
 
   def test(self,dir,fn,commands):
     self.stats['numtests']+=1
-    print ("%02d. " % self.stats['numtests']) + fn
+    print(("%02d. " % self.stats['numtests']) + fn)
     t0 = time.clock()
 
     p=Popen(self.command(dir,fn,self.passoptions),cwd=self.workingdir(dir),stdout=PIPE, stderr=PIPE, stdin=PIPE)
 
     inp = None
-    if callable(self.inputs):
+    if isinstance(self.inputs, collections.Callable):
       inputs = self.inputs(dir,fn)
     else:
       inputs = self.inputs
@@ -240,7 +241,7 @@ class TestSuite:
       raise Exception("Timout.")
     alarm(0) # Remove alarm
     t = time.clock() - t0
-    print "Ran for",t, "seconds"
+    print("Ran for",t, "seconds")
     
     stderr_trigger = False
     for trigger in self.stderr_trigger:
@@ -250,7 +251,7 @@ class TestSuite:
         trigger = trigger[0]
       trigger_raised = re.search(trigger, stderrdata)
       if trigger_raised:
-        print "stderr_trigger '%s' was raised." % trigger_message
+        print("stderr_trigger '%s' was raised." % trigger_message)
         stderr_trigger = True
     stdout_trigger = False
     for trigger in self.stdout_trigger:
@@ -260,19 +261,19 @@ class TestSuite:
         trigger = trigger[0]
       trigger_raised = re.search(trigger, stdoutdata)
       if trigger_raised:
-        print "stdout_trigger '%s' was raised." % trigger_message
+        print("stdout_trigger '%s' was raised." % trigger_message)
         stdout_trigger = True
     if (not(stderr_trigger) and (p.returncode==0 or (p.returncode in self.allowable_returncodes))):
       pass
       #print "  > Succes: %0.2f [ms]" % (t*1000)
     else :
       self.stats['numfails']+=1
-      print "In %s, %s failed:" % (dir,fn)
-      print "="*30
-      print "returncode: ", p.returncode
-      print stdoutdata
-      print stderrdata
-      print "="*30
+      print("In %s, %s failed:" % (dir,fn))
+      print("="*30)
+      print("returncode: ", p.returncode)
+      print(stdoutdata)
+      print(stderrdata)
+      print("="*30)
       return
       
     if self.memcheck:
@@ -293,7 +294,7 @@ class TestSuite:
         killProcess(f.pid)
         raise Exception("Timeout.")
       alarm(0) # Remove alarm
-      print "Ran for", time.time()-t0, "seconds"
+      print("Ran for", time.time()-t0, "seconds")
       m = re.search('definitely lost: (.*) bytes', stdoutdata)
       lost = "0"
       if m:
@@ -311,7 +312,7 @@ class TestSuite:
       if m:
         errors = m.group(1)
       else:
-        print stdoutdata
+        print(stdoutdata)
         raise Exception("valgrind output is not like expected: %s")
 
       error_casadi = False
@@ -337,11 +338,11 @@ class TestSuite:
       errors = "0"  # disabling valgrind error-checking for now: samples are flooded with errors
       if not(lost=="0" and errors=="0") or error_casadi:
         if not(lost=="0"):
-          print "Memory leak: lost %s bytes" % (lost)
+          print("Memory leak: lost %s bytes" % (lost))
         if not(errors=="0"):
-          print "Valgrind errors: %s" % (errors)
-        print "="*30
-        print stdoutdata
-        print "="*30
+          print("Valgrind errors: %s" % (errors))
+        print("="*30)
+        print(stdoutdata)
+        print("="*30)
         self.stats['numfails']+=1
       

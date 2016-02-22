@@ -89,7 +89,7 @@ y_data = X_measured[0,:].T
 if Compiler.hasPlugin('clang'):
   opts = {'jit':True, "jit_options":{"flags":['-O3']}}
 else:
-  print "WARNING; running without jit. This may result in very slow evaluation times"
+  print("WARNING; running without jit. This may result in very slow evaluation times")
   opts = {}
 
 ############ Create a Gauss-Newton solver ##########
@@ -121,11 +121,11 @@ t0 = time.time()-t0
 
 sol = solver(x0=param_guess)
 
-print sol["x"]*scale
+print(sol["x"]*scale)
 
 assert(max(fabs(sol["x"]*scale-param_truth))<1e-8)
 
-print "Init time [s]: ", t0
+print("Init time [s]: ", t0)
 ############ Identifying the simulated system: multiple shooting strategy ##########
 
 t0 = time.time()
@@ -153,10 +153,10 @@ t0 = time.time()-t0
 
 sol = solver(x0=x0,lbg=0,ubg=0)
 
-print sol["x"][:4]*scale
+print(sol["x"][:4]*scale)
 
 assert(max(fabs(sol["x"][:4]*scale-param_truth))<1e-8)
-print "Init time [s]: ", t0
+print("Init time [s]: ", t0)
 
 ############ Identifying the simulated system: direct collocation strategy ##########
 
@@ -199,10 +199,10 @@ t0 = time.time()-t0
 
 sol = solver(x0=x0,lbg=0,ubg=0)
 
-print sol["x"][:4]*scale
+print(sol["x"][:4]*scale)
 
 assert(max(fabs(sol["x"][:4]*scale-param_truth))<1e-5)
-print "Init time [s]: ", t0
+print("Init time [s]: ", t0)
 
 
 

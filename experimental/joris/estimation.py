@@ -248,7 +248,7 @@ class NLPSolutionInspector:
     if hasattr(self,'obj'):
         for i in range(4):
             self.obj[i].set_ydata(self.log[i,1:self.i])
-            self.obj[i].set_xdata(range(self.i-1))
+            self.obj[i].set_xdata(list(range(self.i-1)))
         subplot(313).relim()
         subplot(313).autoscale_view()
     else:

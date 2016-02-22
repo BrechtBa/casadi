@@ -48,7 +48,7 @@ fac.setInput(4)
 #! Evaluate
 fac.evaluate()
 
-print "4! = ", fac.getOutput()
+print("4! = ", fac.getOutput())
 
 #! Using the function in a graph
 #!==============================
@@ -62,7 +62,7 @@ f = MXFunction('f', [x],[y])
 f.setInput(5)
 f.evaluate()
 
-print "5! = ", f.getOutput()
+print("5! = ", f.getOutput())
 
 
 #! Passing userdata
@@ -79,8 +79,10 @@ class Fun:
     self.userdata = userdata
     # sin(x+3*y)
         
-  def evaluate(self,(x,y),(z,)):
-    print "userdata: " , self.userdata
+  def evaluate(self, xxx_todo_changeme, xxx_todo_changeme1):
+    (x,y) = xxx_todo_changeme
+    (z,) = xxx_todo_changeme1
+    print("userdata: " , self.userdata)
     
     z0 = 3*y
     z1 = x+z0
@@ -93,7 +95,7 @@ c.setInput(1.2,0)
 c.setInput(1.5,1)
 c.evaluate()
 
-print c.getOutput(), sin(1.2+3*1.5)
+print(c.getOutput(), sin(1.2+3*1.5))
 
 #! Providing sensitivities
 #!==============================
@@ -104,7 +106,7 @@ print c.getOutput(), sin(1.2+3*1.5)
 try:
   J = c.jacobian()
 except Exception as e:
-  print e
+  print(e)
   
 #! There are several ways to provide sensitivities.
 #! The easiest way is using the class-approach and providing a 'fwd' and/or 'adj' method:
@@ -112,13 +114,17 @@ except Exception as e:
 class Fun:
   # sin(x+3*y)
         
-  def evaluate(self,(x,y),(z,)):
+  def evaluate(self, xxx_todo_changeme2, xxx_todo_changeme3):
+    (x,y) = xxx_todo_changeme2
+    (z,) = xxx_todo_changeme3
     z0 = 3*y
     z1 = x+z0
     z2 = sin(z1)
     z.set(z2)
 
-  def fwd(self,(x,y),(z,),seeds,sens):
+  def fwd(self, xxx_todo_changeme4, xxx_todo_changeme5,seeds,sens):
+    (x,y) = xxx_todo_changeme4
+    (z,) = xxx_todo_changeme5
     z0 = 3*y
     z1 = x+z0
     z2 = sin(z1)
@@ -130,7 +136,9 @@ class Fun:
       dz2 = cos(z1)*dz1
       dz.set(dz2)
   
-  def adj(self,(x,y),(z,),seeds,sens):
+  def adj(self, xxx_todo_changeme6, xxx_todo_changeme7,seeds,sens):
+    (x,y) = xxx_todo_changeme6
+    (z,) = xxx_todo_changeme7
     z0 = 3*y
     z1 = x+z0
     z2 = sin(z1)
@@ -156,14 +164,15 @@ J.setInput(1.2,0)
 J.setInput(1.5,1)
 J.evaluate()
 
-print J.getOutput(), cos(1.2+3*1.5)*3
+print(J.getOutput(), cos(1.2+3*1.5)*3)
 
   
 #! Another way to provide sensitivities is by providing the full Jacobian, i.e. the Jacobian of all inputs strung together with respect to all outputs strung together.
 @pyfunction([Sparsity.dense(1,1),Sparsity.dense(1,1)], [Sparsity.dense(1,1)])
-def fun((x,y)):
+def fun(xxx_todo_changeme10):
   # sin(x+3*y)
 
+  (x,y) = xxx_todo_changeme10
   z0 = 3*y
   z1 = x+z0
   z2 = sin(z1)
@@ -171,9 +180,10 @@ def fun((x,y)):
   return [z2]
 
 @pyfunction([Sparsity.dense(1,1),Sparsity.dense(1,1)], [Sparsity.dense(1,2),Sparsity.dense(1,1)])
-def funjac((x,y)):
+def funjac(xxx_todo_changeme11):
 
   # First output, the full Jacobian
+  (x,y) = xxx_todo_changeme11
   J = horzcat((cos(x+3*y),3*cos(x+3*y)))
 
   # Remaining outputs, the original function outputs
@@ -198,7 +208,9 @@ print J.getOutput(0), cos(1.2+3*1.5)*3
 class Fun:
   # sin(x+3*y)
   
-  def evaluate(self,(x,y),(z,)):
+  def evaluate(self, xxx_todo_changeme8, xxx_todo_changeme9):
+    (x,y) = xxx_todo_changeme8
+    (z,) = xxx_todo_changeme9
     z0 = 3*y
     z1 = x+z0
     z2 = sin(z1)
@@ -286,7 +298,7 @@ J.setInput(1.2,0)
 J.setInput(1.5,1)
 J.evaluate()
 
-print J.getOutput(0), cos(1.2+3*1.5)*3
+print(J.getOutput(0), cos(1.2+3*1.5)*3)
 
 #! Note that this last approach allows to make return 'getDerivative' another PyFunction which in turn implements its own 'getDerivative' in order to provide higher prder sensitivities.
 

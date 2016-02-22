@@ -59,7 +59,7 @@ class SDPtests(casadiTestCase):
 
     F = sparsify(F)
 
-    print F
+    print(F)
 
     G = -DMatrix([[-11,0],[0,23]])
 
@@ -78,7 +78,7 @@ class SDPtests(casadiTestCase):
     F = -horzcat([DMatrix([[10,4],[4,0]]),DMatrix([[0,0],[0,-8]]),DMatrix([[0,-8],[-8,-2]])])
     F = sparsify(F)
 
-    print F
+    print(F)
 
     G = -DMatrix([[-11,0],[0,23]])
     G = sparsify(G)
@@ -455,7 +455,7 @@ class SDPtests(casadiTestCase):
     F = horzcat(Fi)
     F = sparsify(F)
 
-    print F
+    print(F)
 
     G = -DMatrix([[-11,0],[0,23]])
     G = sparsify(G)

@@ -38,7 +38,7 @@ try:
   import pymodelica
   use_precompiled = False
 except:
-  print "No jmodelica installation, falling back to precompiled XML-files"
+  print("No jmodelica installation, falling back to precompiled XML-files")
   use_precompiled = True
 
 # CasADi
@@ -239,7 +239,7 @@ ivp.parseFMI('CtrlFlowSystem.xml')
 ivp.makeSemiExplicit()
 
 # Print the ivp
-print ivp
+print(ivp)
 
 # The problem has no differential states, so instead of integrating, we just solve for mdot...
 

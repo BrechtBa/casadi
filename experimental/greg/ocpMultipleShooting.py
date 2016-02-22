@@ -91,7 +91,7 @@ class OcpMultipleShooting(ocp.Ocp):
         # states/actions
         if xup in self.ode.states+self.ode.actions:
             if timeStep == None:
-                timeStep = range(0, self.N)
+                timeStep = list(range(0, self.N))
             elif not isinstance(timeStep, list):
                 timeStep = [timeStep]
             for ts in timeStep:

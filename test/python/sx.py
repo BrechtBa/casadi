@@ -963,7 +963,7 @@ class SXtests(casadiTestCase):
     e = eig_symbolic(x)
     
     f = SXFunction("f", [x],[e])
-    f.setInputNZ(range(1,8))
+    f.setInputNZ(list(range(1,8)))
     f.getInput().printDense()
     f.evaluate()
     self.checkarray(f.getOutput(),DMatrix([1,-0.29150,10.29150]),digits=5)
@@ -979,7 +979,7 @@ class SXtests(casadiTestCase):
     e = eig_symbolic(x)
     
     f = SXFunction("f", [x],[e])
-    f.setInputNZ(range(1,7))
+    f.setInputNZ(list(range(1,7)))
     f.getInput().printDense()
     f.evaluate()
     self.checkarray(f.getOutput(),DMatrix([1,3,6]),digits=5)
@@ -989,10 +989,10 @@ class SXtests(casadiTestCase):
     f = SXFunction("f", [x],[eig_symbolic(x)])
     f.setInput(6)
     tmp = f.getInput()
-    tmp[Sparsity.diag(5)] = c.diag(range(5))
+    tmp[Sparsity.diag(5)] = c.diag(list(range(5)))
     f.setInput(tmp)
     f.evaluate()
-    self.checkarray(f.getOutput(),DMatrix(range(5)))
+    self.checkarray(f.getOutput(),DMatrix(list(range(5))))
     
   def test_jacobian_empty(self):
     x = SX.sym("x",3)
@@ -1044,7 +1044,7 @@ class SXtests(casadiTestCase):
 
     A = pickle.load(file("../data/apoa1-2.pkl",'r'))
 
-    H = DMatrix(A,range(A.nnz()))
+    H = DMatrix(A,list(range(A.nnz())))
     H = H + H.T
     
     H = H[:20000,:20000]
