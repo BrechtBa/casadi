@@ -13,11 +13,11 @@ if(APPLE)
                     RESULT_VARIABLE PYTHON_PREFIX_FAILED
                     ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
     if(NOT PYTHON_PREFIX_FAILED)
-      find_library(PYTHON_LIBRARY NAMES python2.7
+      find_library(PYTHON_LIBRARY NAMES python3.4
         PATHS ${PYTHON_PREFIX_STRING}/lib NO_DEFAULT_PATH)
       find_path(PYTHON_INCLUDE_DIR
         NAMES Python.h
-        PATHS ${PYTHON_PREFIX_STRING}/include/python2.7 NO_DEFAULT_PATH)
+        PATHS ${PYTHON_PREFIX_STRING}/include/python3.4 NO_DEFAULT_PATH)
     endif()
     message(STATUS ${PYTHON_INCLUDE_DIR})
   endif()
@@ -87,7 +87,7 @@ ${PYTHON_INSTALLATION_PATH_ERROR}
 You may try to fix this problem, or supply PYTHON_PREFIX manually.
 
 e.g.
-\$ cmake -DPYTHON_PREFIX=\"/usr/lib/python2.7/dist-packages\" ..
+\$ cmake -DPYTHON_PREFIX=\"/usr/lib/python3.4/dist-packages\" ..
 
 The idea is to supply a directory that python knows about (included in PYTHONPATH).
 
