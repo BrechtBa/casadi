@@ -44,6 +44,7 @@ set(CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS} "-noproxydel")
 
 # Generate SWIG wrapper
 set_source_files_properties(../casadi.i  PROPERTIES  CPLUSPLUS ON)
+set_source_files_properties(../casadi.i  PROPERTIES SWIG_FLAGS "-py3")
 swig_add_module(casadi python ../casadi.i)
 swig_link_libraries(casadi ${PYTHON_LIBRARIES} casadi)
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
