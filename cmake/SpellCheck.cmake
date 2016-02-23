@@ -1,4 +1,8 @@
-find_package(PythonInterp 3.4)
+if(WITH_PYTHON3)
+  find_package(PythonInterp 3.2)
+else()
+  find_package(PythonInterp)
+endif()
 
 function(add_spell_check_target TARGET_NAME SOURCES_LIST)# PROJECT)
 

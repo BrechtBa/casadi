@@ -82,6 +82,7 @@ option(OLD_LLVM "Use pre-3.5 LLVM" OFF)
 option(WITH_CLANG "Compile the interface to clang JIT" OFF)
 option(WITH_MATLAB "Compile the MATLAB front-end (experimental)" OFF)
 option(WITH_PYTHON "Compile the Python front-end" OFF)
+option(WITH_PYTHON3 "Compile the front-end to Python3" OFF)
 option(WITH_JSON "Compile the JSON front-end" OFF)
 option(WITH_DEBIAN_BUILD "Add -DWITH_DEBIAN_BUILD (used for debian-specific warnings)" OFF)
 option(WITH_DEEPBIND "Load plugins with RTLD_DEEPBIND (can be used to resolve conflicting libraries in e.g. MATLAB)" OFF)
@@ -97,6 +98,10 @@ else()
   option(ENABLE_STATIC "Compile static libraries (.a on Linux)" OFF)
   option(ENABLE_SHARED "Compile shared libraries (.so on Linux)" ON)
 endif()
+
+# add python 3.4 and 3.5 to the python version search list as in ubuntu 14.04
+# the search stops at 3.3
+set(Python_ADDITIONAL_VERSIONS 3.4 3.5)
 
 ############################################################
 ####################### Fortran ############################

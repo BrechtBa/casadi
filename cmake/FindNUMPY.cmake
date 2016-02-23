@@ -1,6 +1,14 @@
 if(NOT NUMPY_PATH)
-  find_package(PythonLibs QUIET)
-  find_package(PythonInterp 3.4 QUIET)
+  
+  
+  if(WITH_PYTHON3)
+    find_package(PythonLibs 3.2 QUIET)
+    find_package(PythonInterp 3.2 QUIET)
+  else()
+    find_package(PythonLibs QUIET)
+    find_package(PythonInterp QUIET)
+  endif()
+  
   if(PYTHON_EXECUTABLE AND NOT NUMPY_INCLUDE_DIR)
     message(STATUS "Python executable is ${PYTHON_EXECUTABLE}")
     exec_program ("${PYTHON_EXECUTABLE}" 

@@ -11,7 +11,7 @@ endif()
 
 # cmake_policy propagation rules
 if(POLICY CMP0011)
-cmake_policy(SET CMP0011 OLD)
+  cmake_policy(SET CMP0011 OLD)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)

@@ -13,20 +13,33 @@ if(APPLE)
                     RESULT_VARIABLE PYTHON_PREFIX_FAILED
                     ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
     if(NOT PYTHON_PREFIX_FAILED)
-      find_library(PYTHON_LIBRARY NAMES python3.4
-        PATHS ${PYTHON_PREFIX_STRING}/lib NO_DEFAULT_PATH)
-      find_path(PYTHON_INCLUDE_DIR
-        NAMES Python.h
-        PATHS ${PYTHON_PREFIX_STRING}/include/python3.4 NO_DEFAULT_PATH)
+	  if(WITH_PYTHON3)
+        find_library(PYTHON_LIBRARY NAMES python3.2
+          PATHS ${PYTHON_PREFIX_STRING}/lib NO_DEFAULT_PATH)
+        find_path(PYTHON_INCLUDE_DIR
+          NAMES Python.h
+          PATHS ${PYTHON_PREFIX_STRING}/include/python3.4 NO_DEFAULT_PATH)
+	  else()
+	    find_library(PYTHON_LIBRARY NAMES python2.7
+          PATHS ${PYTHON_PREFIX_STRING}/lib NO_DEFAULT_PATH)
+        find_path(PYTHON_INCLUDE_DIR
+          NAMES Python.h
+          PATHS ${PYTHON_PREFIX_STRING}/include/python2.7 NO_DEFAULT_PATH)
+	  endif()
     endif()
     message(STATUS ${PYTHON_INCLUDE_DIR})
   endif()
 endif()
 
 # Find packages
-#set(_PYTHON3_VERSIONS 3.4 3.3 3.2 3.1 3.0)
-find_package(PythonLibs REQUIRED)
-find_package(PythonInterp 3.4 REQUIRED)
+
+if(WITH_PYTHON3)
+  find_package(PythonLibs 3.2 REQUIRED)
+  find_package(PythonInterp 3.2 REQUIRED)
+else()
+  find_package(PythonLibs REQUIRED)
+  find_package(PythonInterp REQUIRED)
+endif()
 find_package(NUMPY REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

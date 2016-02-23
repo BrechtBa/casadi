@@ -21,7 +21,12 @@
 # In order to comply with the above copyright, I am noting that I took
 # Daniel's script and hacked it a bit, mostly changing paths and filters
 
-find_package(PythonInterp 3.4)
+
+if(WITH_PYTHON3)
+  find_package(PythonInterp 3.2)
+else()
+  find_package(PythonInterp)
+endif()
 
 set(STYLE_FILTER)
 
