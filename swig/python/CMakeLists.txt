@@ -24,8 +24,9 @@ if(APPLE)
 endif()
 
 # Find packages
+#set(_PYTHON3_VERSIONS 3.4 3.3 3.2 3.1 3.0)
 find_package(PythonLibs REQUIRED)
-find_package(PythonInterp REQUIRED)
+find_package(PythonInterp 3.4 REQUIRED)
 find_package(NUMPY REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
